@@ -62,11 +62,11 @@ namespace CarsNotes.Areas.Identity.Pages.Account.Manage
             public string PhoneNumber { get; set; }
             [MinLength(CarUserFirstNameMinLength)]
             [MaxLength(CarUserFirstNameMaxLength)]
-            [Display(Name = "First number")]
+            [Display(Name = "First Name")]
             public string FirstName { get; set; }
             [MinLength(CarUserLastNameMinLength)]
             [MaxLength(CarUserLastNameMaxLength)]
-            [Display(Name = "Last number")]
+            [Display(Name = "Last Name")]
             public string LastName { get; set; }
         }
 

@@ -2,6 +2,7 @@ using CarsNotes.Areas.Identity.Data;
 using CarsNotes.Data;
 using CarsNotes.Emails;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CarsNotes
@@ -33,7 +34,11 @@ namespace CarsNotes
                 options.Password.RequireUppercase = false;
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            builder.Services.AddControllersWithViews();
+
+            builder.Services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); // CSRF attacs protection.To implement! ---------
+            });
 
             var app = builder.Build();
 
