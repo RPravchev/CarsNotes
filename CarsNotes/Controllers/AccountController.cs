@@ -1,6 +1,6 @@
 ﻿using CarsNotes.Areas.Identity.Data;
 using CarsNotes.Areas.Identity.Pages.Account;
-using CarsNotes.Emails;
+using CarsNotes.Emails.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Encodings.Web;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 
 namespace CarsNotes.Controllers
-{ 
+{/*
 
 
     public class AccountController : Controller
@@ -32,7 +32,9 @@ namespace CarsNotes.Controllers
                 var user = new CarUser 
                 {
                     UserName = model.Input.Email,
-                    Email = model.Input.Email 
+                    Email = model.Input.Email,
+                    FirstName = model.Input.FirstName,
+                    LastName = model.Input.LastName
                 };
                 var result = await _userManager.CreateAsync(user, model.Input.Password);
 
@@ -80,5 +82,5 @@ namespace CarsNotes.Controllers
             return result.Succeeded ? View("ConfirmEmailSuccess") : View("Error");
         }
     }
-
+*/
 }

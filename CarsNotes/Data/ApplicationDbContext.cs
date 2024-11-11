@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarsNotes.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<CarUser>
     {
         //IDataProtectionProvider
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)

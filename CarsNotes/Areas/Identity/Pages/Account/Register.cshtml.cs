@@ -11,6 +11,7 @@ using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 using CarsNotes.Areas.Identity.Data;
+using CarsNotes.Emails.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -31,13 +32,20 @@ namespace CarsNotes.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<CarUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        // TODO once email activated: add email properties -------------------------
+        /*
+        private readonly string senderEmail;
+        private readonly string senderName;
+        */
 
         public RegisterModel(
             UserManager<CarUser> userManager,
             IUserStore<CarUser> userStore,
             SignInManager<CarUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender
+            //, IConfiguration configuration
+            )
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -45,6 +53,10 @@ namespace CarsNotes.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            /*
+            this.senderEmail = configuration["BrevoApi:SenderEmail"]!;
+            this.senderName = configuration["BrevoApi:SenderName"]!;
+            */
         }
 
         /// <summary>
@@ -124,7 +136,13 @@ namespace CarsNotes.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                var user = new CarUser
+                {
+                    UserName = Input.Email,
+                    Email = Input.Email,
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName
+                };
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -148,6 +166,16 @@ namespace CarsNotes.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
+                        // TODO once email activated: send confirmation email ------------------------
+                        /*
+                        string receiverEmail = Input.Email;
+                        string receiverName = Input.FirstName != "" ? Input.FirstName : Input.Email;
+                        string subject = "Confirmation email";
+                        string message = "Dear " + receiverName + "\n" +
+                            "....... \n";
+                        EmailSender.SendEmail(senderEmail, senderName, receiverEmail, receiverName, subject, message);
+                        return RedirectToPage("/Index");
+                        */
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
                     else

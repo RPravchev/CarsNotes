@@ -1,9 +1,10 @@
 using CarsNotes.Areas.Identity.Data;
 using CarsNotes.Data;
-using CarsNotes.Emails;
+using CarsNotes.Emails.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using sib_api_v3_sdk.Client;
 
 namespace CarsNotes
 {
@@ -14,6 +15,9 @@ namespace CarsNotes
 
             var builder = WebApplication.CreateBuilder(args);
 
+            // TODO once email activated! - add email service api key -------------------------------
+            //Configuration.Default.ApiKey.Add("api-key", builder.Configuration["BrevoApi:ApiKey"]);
+
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -23,12 +27,10 @@ namespace CarsNotes
                 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddTransient<EmailService>(); // email service --------------
-
             builder.Services.AddDefaultIdentity<CarUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
-                options.Password.RequireDigit = true;
+                options.Password.RequireDigit = false;
                 options.Password.RequiredLength = 6;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;

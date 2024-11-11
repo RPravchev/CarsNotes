@@ -4,8 +4,8 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 
 
-namespace CarsNotes.Emails
-{
+namespace CarsNotes.Emails.Services
+{/*
     public class EmailService
     {
         private readonly IConfiguration _configuration;
@@ -43,4 +43,5 @@ namespace CarsNotes.Emails
             await client.SendMailAsync(mailMessage);
         }
     }
+    */
 }
