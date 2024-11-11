@@ -20,9 +20,9 @@ html {
 
 body {
     margin-bottom: 60px;
-    background-color: #d1bbbb; /* -------- custom background color ----------- */
-    font-family: cursive;      /* -------- custom font ----------- */
-    color: #142639;            /* -------- custom font color ----------- */
+    background-color: #dfd3d3; /* -------- custom background color ----------- */
+    font-family: cursive; /* -------- custom font ----------- */
+    color: #313335; /* -------- custom font color ----------- */
 }
 /* -------- custom section ----------- start */
 header {
@@ -39,5 +39,9 @@ header {
     inline-size: 50px;
     box-shadow: 0 .25rem .25rem rgb(0, 0, 0, 0.5);
     /*border-radius: 50%;*/
+}
+.nav-link.active {
+    background-color: #a4aebd !important;
+    inline-size: auto
 }
 /* -------- custom section ----------- end */

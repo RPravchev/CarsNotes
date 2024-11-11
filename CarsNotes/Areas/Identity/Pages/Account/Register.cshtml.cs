@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using static CarsNotes.Constants.CarUserConstants;
 
 namespace CarsNotes.Areas.Identity.Pages.Account
 {
@@ -98,6 +99,16 @@ namespace CarsNotes.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [MinLength(CarUserFirstNameMinLength)]
+            [MaxLength(CarUserFirstNameMaxLength)]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [MinLength(CarUserLastNameMinLength)]
+            [MaxLength(CarUserLastNameMaxLength)]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
         }
 
 

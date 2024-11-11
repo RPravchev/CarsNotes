@@ -60,10 +60,12 @@ namespace CarsNotes.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
             [MinLength(CarUserFirstNameMinLength)]
             [MaxLength(CarUserFirstNameMaxLength)]
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
+
             [MinLength(CarUserLastNameMinLength)]
             [MaxLength(CarUserLastNameMaxLength)]
             [Display(Name = "Last Name")]
