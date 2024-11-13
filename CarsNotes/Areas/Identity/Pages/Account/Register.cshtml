@@ -1,5 +1,6 @@
 ﻿@page
 @model RegisterModel
+@using static CarsNotes.Constants.Messages.AccountMessages;
 @{
     ViewData["Title"] = "Register";
 }
@@ -9,7 +10,7 @@
 <div class="row">
     <div class="col-md-4">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
+            <h3>Create a new account.</h3>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
@@ -27,20 +28,17 @@
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-
+            <!-- Adding First and Last names as optional data -->
             <div>
                 <span id="toggleNamesField" style="cursor: pointer;">
-                    &#x1F58A; <!-- Това е иконка за показване/скриване -->
-                </span> Optional data
+                    &#x1F58A @OptionalData
+				</span>
             </div>
-
-            <!-- Поле за малко име, което ще бъде скрито по подразбиране -->
             <div class="form-floating mb-3" id="firstNameField" style="display: none;">
                 <input asp-for="Input.FirstName" class="form-control" aria-required="false" placeholder="First Name"/>
                 <label asp-for="Input.FirstName">First Name</label>
                 <span asp-validation-for="Input.FirstName" class="text-danger"></span>
             </div>
-            <!-- Поле за фамилно име, което ще бъде скрито по подразбиране -->   
             <div class="form-floating mb-3" id="lastNameField" style="display: none;">
                 <input asp-for="Input.LastName" class="form-control" aria-required="false" placeholder="Last Name"/>
                 <label asp-for="Input.LastName">Last Name</label>
@@ -50,6 +48,7 @@
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
+    @*
     <div class="col-md-6 col-md-offset-2">
         <section>
             <h3>Use another service to register.</h3>
@@ -80,6 +79,7 @@
             }
         </section>
     </div>
+    *@
 </div>
 
 @section Scripts {

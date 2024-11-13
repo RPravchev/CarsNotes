@@ -33,7 +33,8 @@ header {
 }
 .btn-primary {
     background-color: #154997;
-    border-color:antiquewhite
+    border-color: #fdf3e6;
+    color: #fdf3e6;
 }
 .logo {
     inline-size: 50px;

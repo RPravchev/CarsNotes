@@ -1,4 +1,5 @@
 ﻿using CarsNotes.Areas.Identity.Data;
+using CarsNotes.Data.Models;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace CarsNotes.Data
             : base(options)
         {
         }
-        public DbSet<CarUser> CarUsers { get; set; }
+        public DbSet<Car> Cars { get; set; }
+        public DbSet<CarOwner> CarsOwner { get; set; }
     }
 }

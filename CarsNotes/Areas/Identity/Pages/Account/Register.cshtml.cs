@@ -115,12 +115,12 @@ namespace CarsNotes.Areas.Identity.Pages.Account
             [MinLength(CarUserFirstNameMinLength)]
             [MaxLength(CarUserFirstNameMaxLength)]
             [Display(Name = "First Name")]
-            public string FirstName { get; set; }
+            public string FirstName { get; set; } = string.Empty;
 
             [MinLength(CarUserLastNameMinLength)]
             [MaxLength(CarUserLastNameMaxLength)]
             [Display(Name = "Last Name")]
-            public string LastName { get; set; }
+            public string LastName { get; set; } = string.Empty;
         }
 
 
@@ -140,8 +140,8 @@ namespace CarsNotes.Areas.Identity.Pages.Account
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
-                    FirstName = Input.FirstName,
-                    LastName = Input.LastName
+                    FirstName = Input.FirstName == null ? string.Empty: Input.FirstName,
+                    LastName = Input.LastName == null ? string.Empty: Input.LastName,
                 };
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);

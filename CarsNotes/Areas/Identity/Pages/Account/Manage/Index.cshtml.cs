@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using static CarsNotes.Constants.CarUserConstants;
+using static CarsNotes.Constants.Messages.AccountMessages;
 
 namespace CarsNotes.Areas.Identity.Pages.Account.Manage
 {
@@ -63,7 +64,7 @@ namespace CarsNotes.Areas.Identity.Pages.Account.Manage
 
             [MinLength(CarUserFirstNameMinLength)]
             [MaxLength(CarUserFirstNameMaxLength)]
-            [Display(Name = "First Name")]
+            [Display(Name = "First Name")] 
             public string FirstName { get; set; }
 
             [MinLength(CarUserLastNameMinLength)]
@@ -113,6 +114,7 @@ namespace CarsNotes.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
+            bool updatePhone = false;
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
@@ -122,12 +124,16 @@ namespace CarsNotes.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
+                updatePhone = true;
             }
+
             bool updateNames = false;
-            if(user.FirstName != Input.FirstName || user.LastName != Input.LastName)
+            string t_FirstName = Input.FirstName == null ? string.Empty : Input.FirstName;
+            string t_LastName = Input.LastName == null ? string.Empty : Input.LastName;
+            if (user.FirstName != t_FirstName || user.LastName != t_LastName)
             {
-                user.FirstName = Input.FirstName;
-                user.LastName = Input.LastName;
+                user.FirstName = t_FirstName;
+                user.LastName = t_LastName;
                 updateNames = true;
             }
             if (updateNames)
@@ -143,9 +149,18 @@ namespace CarsNotes.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            if(updatePhone || updateNames)
+            {
+                await _signInManager.RefreshSignInAsync(user);
+                StatusMessage = UpdatedProfile;
+            }
+            else
+            {
+                StatusMessage = NotUpdatedProfile;
+            }
+            
             return RedirectToPage();
+
         }
     }
 }
