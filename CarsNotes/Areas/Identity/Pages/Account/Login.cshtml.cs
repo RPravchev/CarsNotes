@@ -16,6 +16,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using CarsNotes.Areas.Identity.Data;
 using CarsNotes.Emails;
+using CarsNotes.Data;
+using CarsNotes.Models;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace CarsNotes.Areas.Identity.Pages.Account
 {
@@ -23,11 +27,13 @@ namespace CarsNotes.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<CarUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly ApplicationDbContext context;
 
-        public LoginModel(SignInManager<CarUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<CarUser> signInManager, ILogger<LoginModel> logger, ApplicationDbContext _context)
         {
             _signInManager = signInManager;
             _logger = logger;
+            context = _context;
         }
 
         /// <summary>
@@ -117,7 +123,22 @@ namespace CarsNotes.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+
+                    // check the number of the cars of the logged user -----------------
+                    var carsIds = await context.Cars
+                        .Where(g => g.IsDeleted == false)
+                        .Where(g => g.OwnerId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                        .Select(g => new { Id = g.Id })
+                        .AsNoTracking()
+                        .ToListAsync();
+                    if (carsIds.Count == 1)
+                    {
+                        // open the car details directly ---------------------
+                        string carId = carsIds[0].Id.ToString();
+                        return RedirectToAction("Details", "Car",new {id = carId});
+
+                    }
+                    return RedirectToAction("Index","Car");
                 }
                 if (result.RequiresTwoFactor)
                 {

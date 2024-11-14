@@ -31,6 +31,7 @@ namespace CarsNotes.Models
         public int KilometrageAcquisition { get; set; }
         public int KilometrageActual { get; set; }
         public bool IsDeleted { get; set; }
+        public string OwnerId { get; set; } = string.Empty;
         public ICollection<CarOwner> CarsOwner { get; set; } = new HashSet<CarOwner>();
     }
 }

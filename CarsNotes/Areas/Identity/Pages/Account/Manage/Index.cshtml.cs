@@ -10,6 +10,7 @@ using CarsNotes.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static CarsNotes.Constants.CarUserConstants;
 using static CarsNotes.Constants.Messages.AccountMessages;
 
