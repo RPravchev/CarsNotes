@@ -20,6 +20,10 @@ namespace CarsNotes.Data.Models
         public string OwnerId { get; set; }
         [ForeignKey(nameof(OwnerId))]
         public CarUser Owner { get; set; }
+        [Required]
+        public Guid CarId { get; set; }
+        [ForeignKey(nameof(CarId))]
+        public Car Car { get; set; }
         public bool IsDeleted { get; set; }
 
     }

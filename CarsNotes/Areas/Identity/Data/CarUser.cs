@@ -10,11 +10,12 @@ namespace CarsNotes.Areas.Identity.Data
     public class CarUser : IdentityUser
     {
         //public virtual ICollection<Car> Cars { get; set; } = new List<Car>();
-
+        [PersonalData]
         [MaxLength(CarUserFirstNameMaxLength)]
-        public string FirstName { get; set; } = string.Empty;
+        public string? FirstName { get; set; }// = string.Empty;
+        [PersonalData]
         [MaxLength(CarUserLastNameMaxLength)]
-        public string LastName { get; set; } = string.Empty;
+        public string? LastName { get; set; }// = string.Empty;
         
     }
 }

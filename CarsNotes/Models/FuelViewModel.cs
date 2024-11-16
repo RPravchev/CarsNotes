@@ -1,8 +1,12 @@
-﻿namespace CarsNotes.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CarsNotes.Models
 {
-    public class FuelInfoViewModel
+    public class FuelViewModel
     {
         public Guid Id { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
         public DateTime Date { get; set; }
         public string GasStation { get; set; }
         public string City { get; set; }
