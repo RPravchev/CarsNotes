@@ -45,4 +45,7 @@ header {
     background-color: #a4aebd !important;
     inline-size: auto
 }
+.even-row {
+    background-color: #fdf3e6; /* Light grey for even rows in the table */
+}
 /* -------- custom section ----------- end */

@@ -98,43 +98,45 @@ namespace CarsNotes.Controllers
         {
             string currentUserId = GetCurrentUserId();
 
-            var mod = await context.Cars
-                .Include(p => p.Owner)
+            var car = await context.Cars
                 .FirstOrDefaultAsync(p => p.Id == id);
-
-            if (mod == null)
+                        
+            if (car == null || car.OwnerId != currentUserId)
             {
                 return RedirectToAction(nameof(Index));
             }
 
             var model = new CarViewModel()
             {
-                ShortName = mod.ShortName,
-                MainImageUrl = mod.MainImageUrl,
-                Brand = mod.Brand,
-                Model = mod.Model,
-                RegistrationNumber = mod.RegistrationNumber,
-                FuelType = mod.FuelType,
-                BodyType = mod.BodyType,
-                TransmissionType = mod.TransmissionType,
-                DoorsNumber = mod.DoorsNumber,
-                Color = mod.Color,
-                HorsePower = mod.HorsePower,
-                CubicCapacity = mod.CubicCapacity,
-                ChassisNumber = mod.ChassisNumber,
-                EngineNumber = mod.EngineNumber,
-                TransmissionNumber = mod.TransmissionNumber,
-                YearProduction = mod.YearProduction,
-                YearAcquisition = mod.YearAcquisition,
-                OriginalColorCode = mod.OriginalColorCode,
-                VINCode = mod.VINCode,
-                CountryProduction = mod.CountryProduction,
-                KilometrageAcquisition = mod.KilometrageAcquisition,
-                KilometrageActual = mod.KilometrageActual,
-                IsDeleted = mod.IsDeleted,
-                OwnerId = GetCurrentUserId() ?? string.Empty
-
+                Id = id,
+                ShortName = car.ShortName,
+                MainImageUrl = car.MainImageUrl,
+                Brand = car.Brand,
+                Model = car.Model,
+                RegistrationNumber = car.RegistrationNumber,
+                FuelType = car.FuelType,
+                BodyType = car.BodyType,
+                TransmissionType = car.TransmissionType,
+                DoorsNumber = car.DoorsNumber,
+                Color = car.Color,
+                HorsePower = car.HorsePower,
+                CubicCapacity = car.CubicCapacity,
+                ChassisNumber = car.ChassisNumber,
+                EngineNumber = car.EngineNumber,
+                TransmissionNumber = car.TransmissionNumber,
+                YearProduction = car.YearProduction,
+                YearAcquisition = car.YearAcquisition,
+                OriginalColorCode = car.OriginalColorCode,
+                VINCode = car.VINCode,
+                CountryProduction = car.CountryProduction,
+                KilometrageAcquisition = car.KilometrageAcquisition,
+                KilometrageActual = car.KilometrageActual,
+                IsDeleted = car.IsDeleted,
+                OwnerId = GetCurrentUserId()
             };
+
+            TempData["OwnerId"] = model.OwnerId;
+            TempData["CarId"] = model.Id;
 
             return View(model);
         }

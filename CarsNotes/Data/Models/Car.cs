@@ -30,12 +30,16 @@ namespace CarsNotes.Data.Models
         public string CountryProduction { get; set; } = string.Empty;
         public int KilometrageAcquisition { get; set; }
         public int KilometrageActual { get; set; }
-        public bool IsDeleted { get; set; }
         [Required]
         public string OwnerId { get; set; }
         [ForeignKey(nameof(OwnerId))]
         public CarUser Owner { get; set; }
         public ICollection<CarOwner> CarsOwner { get; set; } = new HashSet<CarOwner>();
+        public DateTime CreateDate { get; set; }
+        public DateTime ModifyDate { get; set; }
+        public bool IsDeleted { get; set; }
+
+
 
     }
 }

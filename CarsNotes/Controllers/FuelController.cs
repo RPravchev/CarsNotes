@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using System.Drawing;
 using System.Globalization;
 using System.Runtime.Serialization;
@@ -20,9 +21,66 @@ namespace CarsNotes.Controllers
         {
             context = _context;
         }
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate, Guid id)
         {
+            if(startDate == null)
+            {
+                startDate = DateTime.Now.AddDays(-30);
+            }
+            if (endDate == null)
+            {
+                endDate = DateTime.Now;
+            }
             string currentUserId = GetCurrentUserId();
+            TempData["CarId"] = id;
+
+            var car = await context.Cars
+                .Where(g => g.OwnerId == currentUserId)
+                .FirstOrDefaultAsync(c => c.Id == id);
+            if (car == null)
+            {
+                return RedirectToAction("Details", "Car");
+            }
+            TempData["CarId"] = id;
+
+            var query = context.Fuels.AsQueryable();
+
+            if (startDate.HasValue)
+                query = query.Where(e => e.Date >= startDate.Value);
+
+            if (endDate.HasValue)
+                query = query.Where(e => e.Date <= endDate.Value);
+
+            var data = await query
+                .OrderByDescending(e => e.Date)
+                .AsNoTracking()
+                .ToListAsync();
+
+            double totalFuel = 0;
+            decimal totalExp = 0;
+            foreach(var f in data)
+            {
+                totalFuel += f.Volume;
+                totalExp += f.PriceTotalFuel;
+            }
+
+            var model = new FuelInfoViewModel
+            {
+                StartDate = (DateTime)startDate,
+                EndDate = (DateTime)endDate,
+                FuelInfos = data,
+                TotalFuelExpensesForPeriod = totalExp,
+                TotalFuelQtyForPeriod = totalFuel
+            };
+
+
+            //if (TempData["OwnerId"] == null || TempData["OwnerId"]?.ToString() != currentUserId)
+            //{
+            //    return RedirectToAction("Details", "Car");
+            //}
+            
+            /*
             var model = await context.Fuels
                 .Where(g => g.IsDeleted == false)
                 .Where(g => g.OwnerId == currentUserId)
@@ -35,53 +93,78 @@ namespace CarsNotes.Controllers
                     Volume = g.Volume,
                     GasType = g.GasType,
                     PricePerLittre = g.PricePerLittre,
-                    PriceTotal = g.PriceTotal,
+                    PriceTotalFuel = g.PriceTotalFuel,
                     KilometrageActual = g.KilometrageActual,
                     ExpencesTotalFuel = g.ExpencesTotalFuel
                     })
                 .AsNoTracking()
                 .ToListAsync();
-
+            */
 
             return View(model);
-
         }
         // ------------------------------------------------------ Add
         [HttpGet]
-        public async Task<IActionResult> Add()
+        public async Task<IActionResult> Add(Guid id)
         {
-            var mod = new FuelViewModel();
-            mod.Date = DateTime.Parse(DateTime.Now.ToString("dd-MM-yyyy HH:MM"),new CultureInfo("en-GB"));
-            //mod.OwnerId = GetCurrentUserId();
-            return View(mod);
+            string currentUserId = GetCurrentUserId();
+            
+            var car = await context.Cars
+                .Where(g => g.OwnerId == currentUserId)
+                .FirstOrDefaultAsync(g => g.Id == id);
+
+            if (car == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+           
+            var model = new FuelViewModel()
+            {
+                Date = DateTime.Now,
+            };
+
+            return View(model);
+            //return RedirectToAction("Details", "Car",model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(FuelViewModel mod)
+        public async Task<IActionResult> Add(FuelViewModel model, Guid id)
         {
-            mod.OwnerId = GetCurrentUserId();
+            string currentUserId = GetCurrentUserId();
+            
+            var car = await context.Cars
+                .Where(g => g.OwnerId == currentUserId)
+                .FirstOrDefaultAsync(g => g.Id == id);
+
+            if (car == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            //model.OwnerId = GetCurrentUserId();
             if (ModelState.IsValid == false)
             {
-                mod.OwnerId = GetCurrentUserId();
-                return View(mod);
+                return View(model);
             }
+            //TempData["CarId"] = id;
             Fuel fuel = new Fuel()
             {
-                Id = mod.Id,
-                Date = mod.Date,
-                GasStation = mod.GasStation,
-                City = mod.City,
-                Volume = mod.Volume,
-                GasType = mod.GasType,
-                PricePerLittre = mod.PricePerLittre,
-                PriceTotal = mod.PriceTotal,
-                KilometrageActual = mod.KilometrageActual,
-                ExpencesTotalFuel = mod.ExpencesTotalFuel,
-                OwnerId = mod.OwnerId
+                //Id = model.Id,
+                Date = model.Date,
+                GasStation = model.GasStation,
+                City = model.City,
+                Volume = model.Volume,
+                GasType = model.GasType,
+                PricePerLiter = model.PricePerLiter,
+                PriceTotalFuel = model.PriceTotalFuel,
+                KilometrageActual = model.KilometrageActual,
+                ExpencesTotalFuel = model.ExpencesTotalFuel,
+                CreateDate = DateTime.Now,
+                OwnerId = currentUserId,
+                CarId = id
             };
             await context.Fuels.AddAsync(fuel);
             await context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index","Fuel",new { id = id });
         }
 
         // ----------------------------------------------------------
