@@ -27,6 +27,10 @@ namespace CarsNotes.Models
         public DateTime EndDate { get; set; }
         public double TotalFuelQtyForPeriod { get; set; }
         public decimal TotalFuelExpensesForPeriod { get; set; }
-
+        public int KilometrageFirst { get; set; }
+        public int KilometrageLast { get; set; }
+        public double FuelConsumption { get; set; }
+        public int Distance { get; set; }
+        public string FuelConsumptionAvarage { get; set; } = null!;
     }
 }

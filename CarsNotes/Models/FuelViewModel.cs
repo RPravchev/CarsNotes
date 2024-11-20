@@ -17,5 +17,6 @@ namespace CarsNotes.Models
         public DateTime CreateDate { get; set; }
         public DateTime ModifyDate { get; set; }
         public bool IsDeleted { get; set; }
+        public Guid CarId { get; set; }
     }
 }

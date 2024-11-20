@@ -9,12 +9,17 @@
     <h2>@ViewData["Title"]</h2>
     @if (User?.Identity?.IsAuthenticated == true)
     {
-        <a asp-controller="Fuel" asp-action="Add" asp-route-id="@TempData["CarId"]" class="btn btn-primary"><i class="fas fa-plus"></i>Add Fuel</a>
+        <div>
+            <a asp-controller="Car" asp-action="Details" asp-route-id="@TempData["CarId"]" class="btn btn-warning"><i class="fas fa-plus"></i>Back</a>
+            <a asp-controller="Fuel" asp-action="Add" asp-route-id="@TempData["CarId"]" class="btn btn-primary"><i class="fas fa-plus"></i>Add Fuel</a>
+        </div>
     }
 </div>
 <hr>
-<div class="row justify-content-center">
-    <div class="col-md-3 text-left" style="margin-top: 20px">
+@if (Model.FuelInfos.Count>0)
+{
+    <div class="row justify-content-center">
+    <div class="col-md-4 text-left" style="margin-top: 20px">
         <form method="get">
         <table @*border="1"*@>
             <thead>
@@ -25,36 +30,59 @@
             <thead>
             <tbody>
                 <tr>
-                    <th><input type="date" id="@Model.StartDate" name="startDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" /></th>
-                    <th><input type="date" id="@Model.EndDate" name="endDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" /></th>
+                    <th><input type="date" class="form-control" id="@Model.StartDate" name="startDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" /></th>
+                    <th><input type="date" class="form-control" id="@Model.EndDate" name="endDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" /></th>
                 </tr>
                 <th></th>
                 <th style="padding-block: 10px;"><button type="submit" a-right>Filter</button></th>
                 <tr>
                     <th><p class="card-text"><small class="text-muted"><b>Total Fuel: </b></small></th>
-                    <th><p class="card-text"><small class="text-muted">@Model.TotalFuelQtyForPeriod</small></p></th>
+                    <th><p class="card-text"><small class="text-muted">@Model.TotalFuelQtyForPeriod litres</small></p></th>
                 </tr>
                 <tr>
                     <th><p class="card-text"><small class="text-muted"><b>Total Expenses: </b></small></th>
                     <th><p class="card-text"><small class="text-muted">@Model.TotalFuelExpensesForPeriod</small></p></th>
                 </tr>
+                <tr>
+                    <th><p></p></th>
+                </tr>
+                <tr>
+                    <th><p class="card-text"><small class="text-muted"><b>Kilometrage End: </b></small></th>
+                    <th><p class="card-text"><small class="text-muted">@Model.KilometrageLast</small></p></th>
+                </tr>
+                <tr>
+                    <th><p class="card-text"><small class="text-muted"><b>Kilometrage Start: </b></small></th>
+                    <th><p class="card-text"><small class="text-muted">@Model.KilometrageFirst</small></p></th>
+                </tr>
+                <tr>
+                    <th><p class="card-text"><small class="text-muted"><b>Distance: </b></small></th>
+                    <th><p class="card-text"><small class="text-muted">@Model.Distance</small></p></th>
+                </tr>
+                <tr>
+                    <th><p class="card-text"><small class="text-muted"><b>Fuel Consumption: </b></small></th>
+                    <th><p class="card-text"><small class="text-muted">@Model.FuelConsumption</small></p></th>
+                </tr>
+                <tr>
+                    <th><p class="card-text"><small class="text-muted"><b>Fuel Consumption Avarage: </b></small></th>
+                    <th><p class="card-text"><small class="text-muted">@Model.FuelConsumptionAvarage</small></p></th>
+                </tr>
              </tbody>
         </table>
         </form>
     </div>
-    <div class="col-md-9" text-left>
+    <div class="col-md-8" text-left>
         <p> </p>
         <table @*border="1"*@>
             <thead>
                 <tr>
-                    <th>Date Time</th>
-                    <th>GasStation</th>
-                    <th>City</th>
-                    <th>Volume</th>
-                    <th>GasType</th>
-                    <th>PricePerLiter</th>
-                    <th>PriceFuelTotal</th>
-                    <th>KilometrageActual</th>
+                    <th>Date Time </th>
+                    <th>Gas Station </th>
+                    <th>City </th>
+                    <th>Volume </th>
+                    <th>Gas Type </th>
+                    <th>Price Per Liter </th>
+                    <th>Price Fuel Total </th>
+                    <th>Kilometrage </th>
                 </tr>
             </thead>
             <tbody>
@@ -70,10 +98,10 @@
                         <td><small class="text-muted" style="padding-right: 6px; display: grid; justify-content: center" >@expense.Volume</small></td>
                         <td><small class="text-muted" style="padding-right: 6px">@expense.GasType</small></td>
                         <td><small class="text-muted" style="padding-right: 6px; display: grid; justify-content: center" >@expense.PricePerLiter</small></td>
-                        <td><small class="text-muted" style="padding-right: 6px">@expense.PriceTotalFuel</small></td>
-                        <td><small class="text-muted" style="padding-right: 6px">@expense.KilometrageActual</small></td>
-                         <td>
-                            <a asp-action="Edit" asp-route-id="@expense.Id" class="btn btn-primary">Edit</a>
+                        <td><small class="text-muted" style="padding-right: 6px; display: grid; justify-content: center" >@expense.PriceTotalFuel</small></td>
+                        <td><small class="text-muted" style="padding-right: 6px; display: grid; justify-content: center">@expense.KilometrageActual</small></td>
+                         <td>                       
+                            <a asp-controller="Fuel" asp-action="Edit" asp-route-id="@expense.Id" class="btn btn-primary">Edit</a>
                         </td>
 
                     </tr>
@@ -82,4 +110,6 @@
         </table>
     </div>
 </div>
+}
+
 
