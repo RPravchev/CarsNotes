@@ -36,34 +36,38 @@
                 <th></th>
                 <th style="padding-block: 10px;"><button type="submit" a-right>Filter</button></th>
                 <tr>
-                    <th><p class="card-text"><small class="text-muted"><b>Total Fuel: </b></small></th>
-                    <th><p class="card-text"><small class="text-muted">@Model.TotalFuelQtyForPeriod litres</small></p></th>
+                    <th><p class="card-text"><small class="text-muted"><b>Fuel total: </b></small></th>
+                    <th><p class="card-text"><small class="text-muted">@Model.TotalFuelQtyForPeriod.ToString("# ###")</small></p></th>
                 </tr>
                 <tr>
-                    <th><p class="card-text"><small class="text-muted"><b>Total Expenses: </b></small></th>
-                    <th><p class="card-text"><small class="text-muted">@Model.TotalFuelExpensesForPeriod</small></p></th>
+                    <th><p class="card-text"><small class="text-muted"><b>Expenses total: </b></small></th>
+                    <th><p class="card-text"><small class="text-muted">@Model.TotalFuelExpensesForPeriod.ToString("# ###")</small></p></th>
+                </tr>
+                <tr>
+                    <th><p class="card-text"><small class="text-muted"><b>Price Avg.: </b></small></th>
+                    <th><p class="card-text"><small class="text-muted">@Model.AveragePrice</small></p></th>
                 </tr>
                 <tr>
                     <th><p></p></th>
                 </tr>
                 <tr>
                     <th><p class="card-text"><small class="text-muted"><b>Kilometrage End: </b></small></th>
-                    <th><p class="card-text"><small class="text-muted">@Model.KilometrageLast</small></p></th>
+                    <th><p class="card-text"><small class="text-muted">@Model.KilometrageLast.ToString("# ###")</small></p></th>
                 </tr>
                 <tr>
                     <th><p class="card-text"><small class="text-muted"><b>Kilometrage Start: </b></small></th>
-                    <th><p class="card-text"><small class="text-muted">@Model.KilometrageFirst</small></p></th>
+                    <th><p class="card-text"><small class="text-muted">@Model.KilometrageFirst.ToString("# ###")</small></p></th>
                 </tr>
                 <tr>
                     <th><p class="card-text"><small class="text-muted"><b>Distance: </b></small></th>
-                    <th><p class="card-text"><small class="text-muted">@Model.Distance</small></p></th>
+                    <th><p class="card-text"><small class="text-muted">@Model.Distance.ToString("# ###")</small></p></th>
                 </tr>
                 <tr>
                     <th><p class="card-text"><small class="text-muted"><b>Fuel Consumption: </b></small></th>
-                    <th><p class="card-text"><small class="text-muted">@Model.FuelConsumption</small></p></th>
+                    <th><p class="card-text"><small class="text-muted">@Model.FuelConsumption.ToString("# ###")</small></p></th>
                 </tr>
                 <tr>
-                    <th><p class="card-text"><small class="text-muted"><b>Fuel Consumption Avarage: </b></small></th>
+                    <th><p class="card-text"><small class="text-muted"><b>Fuel Consumption Avg.: </b></small></th>
                     <th><p class="card-text"><small class="text-muted">@Model.FuelConsumptionAvarage</small></p></th>
                 </tr>
              </tbody>
@@ -72,7 +76,7 @@
     </div>
     <div class="col-md-8" text-left>
         <p> </p>
-        <table @*border="1"*@>
+        <table>
             <thead>
                 <tr>
                     <th>Date Time </th>
@@ -99,11 +103,19 @@
                         <td><small class="text-muted" style="padding-right: 6px">@expense.GasType</small></td>
                         <td><small class="text-muted" style="padding-right: 6px; display: grid; justify-content: center" >@expense.PricePerLiter</small></td>
                         <td><small class="text-muted" style="padding-right: 6px; display: grid; justify-content: center" >@expense.PriceTotalFuel</small></td>
-                        <td><small class="text-muted" style="padding-right: 6px; display: grid; justify-content: center">@expense.KilometrageActual</small></td>
+                            @if (expense.FullTank == true)
+                            {
+                                <td><small class="text-muted" style="padding-right: 6px; display: grid; justify-content: center; background-color: lightgreen">@expense.KilometrageActual.ToString("# ###")</small></td>
+                            }
+                            else
+                            {
+                                <td><small class="text-muted" style="padding-right: 6px; display: grid; justify-content: center; background-color: lightyellow">@expense.KilometrageActual.ToString("# ###")</small></td>
+                            }
+ 
                          <td>                       
                             <a asp-controller="Fuel" asp-action="Edit" asp-route-id="@expense.Id" class="btn btn-primary">Edit</a>
                         </td>
-
+ 
                     </tr>
                 }
             </tbody>

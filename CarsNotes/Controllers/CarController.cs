@@ -141,6 +141,107 @@ namespace CarsNotes.Controllers
             return View(model);
         }
 
+        // ------------------------------------------------------ Edit
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            string currentUserId = GetCurrentUserId();
+
+            var car = await context.Cars
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (car == null || car.OwnerId != currentUserId)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var model = new CarViewModel()
+            {
+                Id = id,
+                ShortName = car.ShortName,
+                MainImageUrl = car.MainImageUrl,
+                Brand = car.Brand,
+                Model = car.Model,
+                RegistrationNumber = car.RegistrationNumber,
+                FuelType = car.FuelType,
+                BodyType = car.BodyType,
+                TransmissionType = car.TransmissionType,
+                DoorsNumber = car.DoorsNumber,
+                Color = car.Color,
+                HorsePower = car.HorsePower,
+                CubicCapacity = car.CubicCapacity,
+                ChassisNumber = car.ChassisNumber,
+                EngineNumber = car.EngineNumber,
+                TransmissionNumber = car.TransmissionNumber,
+                YearProduction = car.YearProduction,
+                YearAcquisition = car.YearAcquisition,
+                OriginalColorCode = car.OriginalColorCode,
+                VINCode = car.VINCode,
+                CountryProduction = car.CountryProduction,
+                KilometrageAcquisition = car.KilometrageAcquisition,
+                KilometrageActual = car.KilometrageActual,
+                IsDeleted = car.IsDeleted,
+                OwnerId = GetCurrentUserId()
+            };
+
+            TempData["OwnerId"] = model.OwnerId;
+            TempData["CarId"] = model.Id;
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(CarViewModel model)
+        {
+            string currentUserId = GetCurrentUserId();
+
+            var car = await context.Cars
+                .Where(g => g.OwnerId == currentUserId)
+                .FirstOrDefaultAsync(g => g.Id == model.Id);
+
+            if (car == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+
+            if (ModelState.IsValid == false)
+            {
+                //mod.OwnerId = GetCurrentUserId();
+                return View(model);
+            }
+
+
+            car.ShortName = model.ShortName;
+            car.MainImageUrl = model.MainImageUrl;
+            car.Brand = model.Brand;
+            car.Model = model.Model;
+            car.RegistrationNumber = model.RegistrationNumber;
+            car.FuelType = model.FuelType;
+            car.BodyType = model.BodyType;
+            car.TransmissionType = model.TransmissionType;
+            car.DoorsNumber = model.DoorsNumber;
+            car.Color = model.Color;
+            car.HorsePower = model.HorsePower;
+            car.CubicCapacity = model.CubicCapacity;
+            car.ChassisNumber = model.ChassisNumber;
+            car.EngineNumber = model.EngineNumber;
+            car.TransmissionNumber = model.TransmissionNumber;
+            car.YearProduction = model.YearProduction;
+            car.YearAcquisition = model.YearAcquisition;
+            car.OriginalColorCode = model.OriginalColorCode;
+            car.VINCode = model.VINCode;
+            car.CountryProduction = model.CountryProduction;
+            car.KilometrageAcquisition = model.KilometrageAcquisition;
+            car.KilometrageActual = model.KilometrageActual;
+            car.IsDeleted = model.IsDeleted;
+            car.OwnerId = model.OwnerId;
+
+
+            await context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         // ----------------------------------------------------------
         private string GetCurrentUserId()
         {

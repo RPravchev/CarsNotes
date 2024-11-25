@@ -1,0 +1,103 @@
+﻿@model CarViewModel
+@{
+    ViewData["Title"] = "Edit Product";
+    var today = DateTime.Now.ToString("dd-MM-yyyy");
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
+    <h2>@ViewData["Title"]</h2>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-sm-6 mb-2">
+                    <label asp-for="@Model.ShortName" class="form-label-add-edit">Short Name</label>
+                    <input asp-for="@Model.ShortName" class="form-control" aria-required="true" />
+                    <span asp-validation-for="@Model.ShortName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-2">
+                <label asp-for="@Model.MainImageUrl" class="form-label-add-edit">ImageURL</label>
+                <input asp-for="@Model.MainImageUrl" class="form-control" aria-required="false" placeholder="Enter image URL (optional)" />
+                <span asp-validation-for="@Model.MainImageUrl" class="text-danger"></span>
+            </div>
+        <div class="mb-2">
+            <label asp-for="@Model.Brand" class="form-label-add-edit">Brand</label>
+            <input asp-for="@Model.Brand" class="form-control" aria-required="false" placeholder="Enter Brand (optional)" />
+            <span asp-validation-for="@Model.Brand" class="text-danger"></span>
+        </div>
+            <div class="mb-2">
+                <label asp-for="@Model.Model" class="form-label-add-edit">Model</label>
+                <input asp-for="@Model.Model" class="form-control" aria-required="false" placeholder="Enter Model (optional)" />
+                <span asp-validation-for="@Model.Model" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
+                <label asp-for="@Model.YearProduction" class="form-label-add-edit">Year of Production</label>
+                <input asp-for="@Model.YearProduction" class="form-control" aria-required="false" placeholder="Enter Year of Production (optional)" />
+                <span asp-validation-for="@Model.YearProduction" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
+                <label asp-for="@Model.KilometrageAcquisition" class="form-label-add-edit">Kilometrage Acquisition</label>
+                <input asp-for="@Model.KilometrageAcquisition" class="form-control" aria-required="false" placeholder="Enter Kilometrage Acquisition (optional)" />
+                <span asp-validation-for="@Model.KilometrageAcquisition" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
+                <label asp-for="@Model.KilometrageActual" class="form-label-add-edit">KilometrageActual</label>
+                <input asp-for="@Model.KilometrageActual" class="form-control" aria-required="false" placeholder="Enter KilometrageActual (optional)" />
+                <span asp-validation-for="@Model.KilometrageActual" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
+                <label asp-for="@Model.VINCode" class="form-label-add-edit">VINCode</label>
+                <input asp-for="@Model.VINCode" class="form-control" aria-required="false" placeholder="Enter VINCode (optional)" />
+                <span asp-validation-for="@Model.VINCode" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
+                <label asp-for="@Model.TransmissionType" class="form-label-add-edit">TransmissionType</label>
+                <input asp-for="@Model.TransmissionType" class="form-control" aria-required="false" placeholder="Enter TransmissionType (optional)" />
+                <span asp-validation-for="@Model.TransmissionType" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
+                <label asp-for="@Model.TransmissionNumber" class="form-label-add-edit">TransmissionNumber</label>
+                <input asp-for="@Model.TransmissionNumber" class="form-control" aria-required="false" placeholder="Enter TransmissionNumber (optional)" />
+                <span asp-validation-for="@Model.TransmissionNumber" class="text-danger"></span>
+            </div>
+                        <div class="mb-2">
+                <label asp-for="@Model.FuelType" class="form-label-add-edit">FuelType</label>
+                <input asp-for="@Model.FuelType" class="form-control" aria-required="false" placeholder="Enter FuelType (optional)" />
+                <span asp-validation-for="@Model.FuelType" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
+                <label asp-for="@Model.HorsePower" class="form-label-add-edit">HorsePower</label>
+                <input asp-for="@Model.HorsePower" class="form-control" aria-required="false" placeholder="Enter HorsePower (optional)" />
+                <span asp-validation-for="@Model.HorsePower" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
+                <label asp-for="@Model.CubicCapacity" class="form-label-add-edit">CubicCapacity</label>
+                <input asp-for="@Model.CubicCapacity" class="form-control" aria-required="false" placeholder="Enter CubicCapacity (optional)" />
+                <span asp-validation-for="@Model.CubicCapacity" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
+                <label asp-for="@Model.CountryProduction" class="form-label-add-edit">CountryProduction</label>
+                <input asp-for="@Model.CountryProduction" class="form-control" aria-required="false" placeholder="Enter CountryProduction (optional)" />
+                @*<span asp-validation-for="@Model.CountryProduction" class="text-danger"></span>*@
+            </div>
+            <div class="mb-2">
+                <label asp-for="@Model.BodyType" class="form-label-add-edit">BodyType</label>
+                <input asp-for="@Model.BodyType" class="form-control" aria-required="false" placeholder="Enter BodyType (optional)" />
+                <span asp-validation-for="@Model.BodyType" class="text-danger"></span>
+            </div>
+            <div class="mb-2">
+                <label asp-for="@Model.DoorsNumber" class="form-label-add-edit">DoorsNumber</label>
+                <input asp-for="@Model.DoorsNumber" class="form-control" aria-required="false" placeholder="Enter DoorsNumber (optional)" />
+                <span asp-validation-for="@Model.DoorsNumber" class="text-danger"></span>
+            </div>
+
+            <div class="mb-2">
+                <input class="btn btn-warning btn-dark-text w-100 py-2 fw-bold rounded" type="submit" value="Save" />
+            </div>
+        </form>
+    </div>
+</div>

@@ -16,6 +16,8 @@ namespace CarsNotes.Data.Models
         public decimal PricePerLiter {  get; set; }
         public decimal PriceTotalFuel { get; set; }
         public int KilometrageActual { get; set; }
+        public bool FullTank { get; set; }
+        public string? Description { get; set; }
         public decimal ExpencesTotalFuel { get; set; }
         [Required]
         public string OwnerId { get; set; } = null!;

@@ -26,17 +26,36 @@ namespace CarsNotes.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate, Guid id)
         {
-            if(startDate == null)
+            DateTime sDate = DateTime.Now;
+            DateTime eDate = DateTime.Now;
+            // The time of 'startDate' should be with HH:mm:ss = 00:00:00
+            // The time of 'endDate' should be with HH:mm:ss = 23:59:59
+            if(startDate == null && TempData["StartDate"]==null)
             {
-                startDate = DateTime.Today.AddDays(-30);
+                //startDate = DateTime.Today.AddDays(-30);
+                sDate= DateTime.Today.AddDays(-30);
             }
-            if (endDate == null)
+            else if(startDate == null)
             {
-                endDate = DateTime.Today.AddDays(1).AddSeconds(-1);
+                //startDate = (DateTime?)TempData["StartDate"];
+                sDate = (DateTime)TempData["StartDate"];
+            }
+            else { sDate = (DateTime)startDate; }
+
+            if (endDate == null && TempData["EndDate"] == null)
+            {
+                //endDate = DateTime.Today.AddDays(1).AddSeconds(-1);
+                eDate = DateTime.Today.AddDays(1).AddSeconds(-1);
+            }
+            else if (endDate == null)
+            {
+                //endDate = (DateTime?)TempData["EndDate"];
+                eDate = (DateTime)TempData["EndDate"];
             }
             else
             {
-                endDate = endDate.Value.AddDays(1).AddSeconds(-1);
+                //endDate = endDate.Value.AddDays(1).AddSeconds(-1);
+                eDate = endDate.Value.AddDays(1).AddSeconds(-1);
             }
             string currentUserId = GetCurrentUserId();
             TempData["CarId"] = id;
@@ -65,11 +84,12 @@ namespace CarsNotes.Controllers
 
             double totalFuel = 0;
             decimal totalExp = 0;
+            string avgPrice = "";
             int kilometrageFirst = 0;
             int kilometrageLast = 0;
             double fuelConsumption = 0;
             int distance = 0;
-            string fuelConsumptionAvarage = ""; 
+            string fuelConsumptionAvarage = "";
             
             for(int f = 0; f < data.Count; f++)
             {
@@ -89,6 +109,11 @@ namespace CarsNotes.Controllers
                     kilometrageFirst = km;
                 }
             }
+            if(totalExp>0 && totalFuel > 0)
+            {
+                avgPrice = ((double)totalExp / totalFuel).ToString("0.00");
+            }
+            
 
             if(kilometrageFirst > 0 && kilometrageLast > kilometrageFirst)
             {
@@ -103,11 +128,12 @@ namespace CarsNotes.Controllers
 
             var model = new FuelInfoViewModel
             {
-                StartDate = (DateTime)startDate,
-                EndDate = (DateTime)endDate,
+                StartDate = sDate,
+                EndDate = eDate,
                 FuelInfos = data,
                 TotalFuelExpensesForPeriod = totalExp,
                 TotalFuelQtyForPeriod = totalFuel,
+                AveragePrice = avgPrice,
                 KilometrageFirst = kilometrageFirst,
                 KilometrageLast = kilometrageLast,
                 FuelConsumption = fuelConsumption,
@@ -177,7 +203,9 @@ namespace CarsNotes.Controllers
                 CreateDate = DateTime.Now,
                 OwnerId = currentUserId,
                 //CarId = (Guid)TempData["CarId"]
-                CarId = model.Id
+                CarId = model.Id,
+                Description = model.Description,
+                FullTank = model.FullTank
             };
             await context.Fuels.AddAsync(fuel);
             await context.SaveChangesAsync();
@@ -211,8 +239,10 @@ namespace CarsNotes.Controllers
                 PricePerLiter = fuel.PricePerLiter,
                 PriceTotalFuel = fuel.PriceTotalFuel,
                 KilometrageActual = fuel.KilometrageActual,
-                CarId = fuel.CarId
-                
+                CarId = fuel.CarId,
+                Description = fuel.Description,
+                FullTank = (bool)fuel.FullTank
+
             };
             return View(model);
         }
@@ -245,6 +275,8 @@ namespace CarsNotes.Controllers
             fuel.PriceTotalFuel = model.PriceTotalFuel;
             fuel.KilometrageActual = model.KilometrageActual;
             fuel.ExpencesTotalFuel = model.ExpencesTotalFuel;
+            fuel.Description = model.Description;
+            fuel.FullTank = model.FullTank;
 
             await context.SaveChangesAsync();
             return RedirectToAction("Index", "Fuel", new { id = fuel.CarId, startDate = TempData["StartDate"], endDate = TempData["EndDate"] });

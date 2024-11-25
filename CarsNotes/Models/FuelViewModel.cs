@@ -13,6 +13,8 @@ namespace CarsNotes.Models
         public decimal PricePerLiter { get; set; }
         public decimal PriceTotalFuel { get; set; }
         public int KilometrageActual { get; set; }
+        public bool FullTank {  get; set; }
+        public string? Description { get; set; }
         public decimal ExpencesTotalFuel { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime ModifyDate { get; set; }
