@@ -27,8 +27,8 @@ namespace CarsNotes.Data.Models
         public Guid CarId { get; set; }
         [ForeignKey(nameof(CarId))]
         public Car Car { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime ModifyDate { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public DateTime ModifiedOn { get; set; }
         public bool IsDeleted { get; set; }
 
     }

@@ -16,8 +16,8 @@ namespace CarsNotes.Models
         public bool FullTank {  get; set; }
         public string? Description { get; set; }
         public decimal ExpencesTotalFuel { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime ModifyDate { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public DateTime ModifiedOn { get; set; }
         public bool IsDeleted { get; set; }
         public Guid CarId { get; set; }
     }

@@ -17,6 +17,7 @@ namespace CarsNotes.Data
         public DbSet<CarOwner> CarsOwner { get; set; }
         public DbSet<Fuel> Fuels { get; set; }
         public DbSet<Care> Cares { get; set; }
-        public DbSet<Oil> Oils { get; set; }
+        public DbSet<Legal> Legals { get; set; }
+        public DbSet<Place> Places { get; set; }
     }
 }

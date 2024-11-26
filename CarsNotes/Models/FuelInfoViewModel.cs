@@ -19,8 +19,8 @@ namespace CarsNotes.Models
         public string OwnerId { get; set; }
         [Required]
         public Guid CarId { get; set; }
-        public DateTime CreateDate { get; set; }
-        public DateTime ModifyDate { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public DateTime ModifiedOn { get; set; }
         public bool IsDeleted { get; set; }
         public IList<Fuel> FuelInfos { get; set; } = new List<Fuel>();
         public DateTime StartDate { get; set; }

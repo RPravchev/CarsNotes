@@ -200,7 +200,7 @@ namespace CarsNotes.Controllers
                 PriceTotalFuel = model.PriceTotalFuel,
                 KilometrageActual = model.KilometrageActual,
                 ExpencesTotalFuel = model.ExpencesTotalFuel,
-                CreateDate = DateTime.Now,
+                CreatedOn = DateTime.Now,
                 OwnerId = currentUserId,
                 //CarId = (Guid)TempData["CarId"]
                 CarId = model.Id,

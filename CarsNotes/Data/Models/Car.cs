@@ -35,8 +35,8 @@ namespace CarsNotes.Data.Models
         [ForeignKey(nameof(OwnerId))]
         public CarUser Owner { get; set; }
         public ICollection<CarOwner> CarsOwner { get; set; } = new HashSet<CarOwner>();
-        public DateTime CreateDate { get; set; }
-        public DateTime ModifyDate { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public DateTime ModifiedOn { get; set; }
         public bool IsDeleted { get; set; }
 
 
