@@ -4,6 +4,7 @@ using CarsNotes.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarsNotes.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241128152652_CarTableUpdate")]
+    partial class CarTableUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,10 +104,8 @@ namespace CarsNotes.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AdditionalDetails")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("BodyType")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Brand")
@@ -112,27 +113,32 @@ namespace CarsNotes.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ChassisNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Color")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CountryProduction")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CubicCapacity")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DoorsNumber")
                         .HasColumnType("int");
 
                     b.Property<string>("EngineNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FuelType")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("HorsePower")
@@ -148,6 +154,7 @@ namespace CarsNotes.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("MainImageUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Model")
@@ -158,6 +165,7 @@ namespace CarsNotes.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("OriginalColorCode")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("OwnerId")
@@ -165,6 +173,7 @@ namespace CarsNotes.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("RegistrationNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShortName")
@@ -172,12 +181,15 @@ namespace CarsNotes.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TransmissionNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TransmissionType")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VINCode")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("YearAcquisition")

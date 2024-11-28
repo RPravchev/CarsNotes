@@ -14,14 +14,8 @@ using System.Security.Claims;
 namespace CarsNotes.Controllers
 {
     [Authorize]
-    public class FuelController : Controller
+    public class FuelController(ApplicationDbContext context) : Controller
     {
-        private readonly ApplicationDbContext context;
-        public FuelController(ApplicationDbContext _context)
-        {
-            context = _context;
-        }
-
 
         [HttpGet]
         public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate, Guid id)
