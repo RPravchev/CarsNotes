@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="Services\" />
-    <Folder Include="Views\Care\" />
     <Folder Include="Views\Legal\" />
     <Folder Include="Views\Place\" />
   </ItemGroup>
