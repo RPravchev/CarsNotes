@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CarsNotes.Areas.Identity.Data;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarsNotes.Data.Models
@@ -20,6 +21,10 @@ namespace CarsNotes.Data.Models
         public decimal PriceWork { get; set; }
         public decimal PriceTotal { get; set; }
         public bool IsPendingCare { get; set; }
+        [Required]
+        public string OwnerId { get; set; } = null!;
+        [ForeignKey(nameof(OwnerId))]
+        public CarUser Owner { get; set; }
         [Required]
         public Guid CarId { get; set; }
         [ForeignKey(nameof(CarId))]

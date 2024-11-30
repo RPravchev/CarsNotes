@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarsNotes.Models
 {
-    public class CareInfoViewModel
+    public class CareViewModel
     {
         [Key]
         public Guid Id { get; set; }
@@ -13,21 +13,25 @@ namespace CarsNotes.Models
         [Required]
         public string Type { get; set; }
         public string? TypeDetails { get; set; }
-        public string? Manifacturer { get; set; }
+        public string Manifacturer { get; set; }
         public string? AdditionalInfo { get; set; }
-        public string? BuyedFrom { get; set; }
+        public string BuyedFrom { get; set; }
+        public double Quantity { get; set; }
+        public decimal PriceMaterial { get; set; }
+        public decimal PriceWork { get; set; }
         public decimal PriceTotal { get; set; }
         public bool IsPendingCare { get; set; }
         [Required]
-        public string OwnerId { get; set; }
-        [Required]
         public Guid CarId { get; set; }
-        [ForeignKey(nameof(CarId))]
-        public Car Car { get; set; }
-        public IList<Care> CareInfos { get; set; } = new List<Care>();
+        [Required]
+        public int CareTypeId { get; set; }
+
+        public IList<CareType> CareInfos { get; set; } = new List<CareType>();
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public decimal TotalExpensesForPeriod { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public DateTime ModifiedOn { get; set; }
         public bool IsDeleted { get; set; }
     }
 }
