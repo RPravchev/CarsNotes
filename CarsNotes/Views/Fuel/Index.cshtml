@@ -96,7 +96,7 @@
                     var expense = Model.FuelInfos[i];
                     var rowClass = i % 2 == 0 ? "even-row" : "odd-row";
                     <tr class="@rowClass">
-                        <td><small class="text-muted" style="padding-right: 6px">@expense.Date</small></td>
+                            <td><small class="text-muted" style="padding-right: 6px">@expense.Date.ToString("yyyy-MM-dd HH:mm")</small></td>
                         <td><small class="text-muted" style="padding-right: 6px; display: grid; justify-content: center" >@expense.GasStation</small></td>
                         <td><small class="text-muted" style="padding-right: 6px">@expense.City</small></td>
                         <td><small class="text-muted" style="padding-right: 6px; display: grid; justify-content: center" >@expense.Volume</small></td>

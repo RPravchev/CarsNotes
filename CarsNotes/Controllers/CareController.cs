@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Drawing;
 using System.Globalization;
 using System.Runtime.Serialization;
@@ -18,39 +19,54 @@ namespace CarsNotes.Controllers
     {
         public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate, Guid id)
         {
+            // ----------------------------------------- Date logic --- start
+
             DateTime sDate = DateTime.Now;
             DateTime eDate = DateTime.Now;
-            // The time of 'startDate' should be with HH:mm:ss = 00:00:00
-            // The time of 'endDate' should be with HH:mm:ss = 23:59:59
-            if (startDate == null && TempData["StartDate"] == null)
-            {
-                //startDate = DateTime.Today.AddDays(-30);
-                sDate = DateTime.Today.AddDays(-30);
-            }
-            else if (startDate == null)
-            {
-                //startDate = (DateTime?)TempData["StartDate"];
-                sDate = (DateTime)TempData["StartDate"];
-            }
-            else { sDate = (DateTime)startDate; }
 
-            if (endDate == null && TempData["EndDate"] == null)
+            if(startDate != null)
             {
-                //endDate = DateTime.Today.AddDays(1).AddSeconds(-1);
-                eDate = DateTime.Today.AddDays(1).AddSeconds(-1);
-            }
-            else if (endDate == null)
+                sDate = (DateTime)startDate;
+				TempData["StartDateCare"] = sDate;
+			}
+			else if(TempData.Peek("StartDateCare") != null)
+			{
+				sDate = (DateTime)TempData.Peek("StartDateCare");
+			}
+			else
             {
-                //endDate = (DateTime?)TempData["EndDate"];
-                eDate = (DateTime)TempData["EndDate"];
-            }
-            else
-            {
-                //endDate = endDate.Value.AddDays(1).AddSeconds(-1);
-                eDate = endDate.Value.AddDays(1).AddSeconds(-1);
-            }
-            string currentUserId = GetCurrentUserId();
-            TempData["CarId"] = id;
+                sDate = new DateTime(DateTime.Now.Year, 1, 1);
+                //sDate = DateTime.Today.AddDays(-30);
+				TempData["StartDateCare"] = sDate;
+			}
+
+			if (endDate != null)
+			{
+                if(endDate.Value.Second == 59)
+                {
+					eDate = (DateTime)endDate;
+				}
+                else
+                {
+					eDate = (DateTime)endDate.Value.AddDays(1).AddSeconds(-1);
+				}	
+				TempData["EndDateCare"] = eDate;
+			}
+			else if (TempData.Peek("EndDateCare") != null)
+			{
+				eDate = (DateTime)TempData.Peek("EndDateCare");
+			}
+			else
+			{
+				eDate = DateTime.Today.AddDays(1).AddSeconds(-1);
+				TempData["EndDateCare"] = eDate;
+			}
+
+			// ----------------------------------------- Date logic --- end
+
+
+			string currentUserId = GetCurrentUserId();
+            //TempData["CarId"] = id;
 
             var car = await context.Cars
                 .Where(g => g.OwnerId == currentUserId)
@@ -60,17 +76,42 @@ namespace CarsNotes.Controllers
                 return RedirectToAction("Details", "Car");
             }
 
-            var query = context.Cares.AsQueryable();
-
+            var query = context.Cares
+				//.Include(g => g.id == CareType.Id)
+				.Where(e => e.Date >= sDate)
+				.Where(e => e.Date <= eDate)
+				.AsQueryable();
+            /*
             if (startDate.HasValue)
                 query = query.Where(e => e.Date >= startDate.Value);
 
             if (endDate.HasValue)
                 query = query.Where(e => e.Date <= endDate.Value);
+            */
 
             var data = await query
                 .Where(e => e.CarId == id)
                 .OrderByDescending(e => e.Date)
+                .Include(e => e.CareType)
+                .Select(e => new CareViewModel()
+                {
+                    Id = e.Id,
+                    PriceTotal = e.PriceTotal,
+                    CareType = e.CareType.Name,
+                    CareTypeId = e.CareTypeId,
+                    Date = e.Date,
+                    TypeDetails = e.TypeDetails,
+                    Manifacturer = e.Manifacturer,
+                    AdditionalInfo = e.AdditionalInfo,
+                    BuyedFrom = e.BuyedFrom,
+                    Quantity = e.Quantity,
+                    PriceMaterial = e.PriceMaterial,
+                    PriceWork = e.PriceWork,
+                    IsDeleted = e.IsDeleted,
+                    IsPendingCare = e.IsPendingCare,
+                    CarId = id
+
+                })
                 .AsNoTracking()
                 .ToListAsync();
 
@@ -86,11 +127,11 @@ namespace CarsNotes.Controllers
             {
                 StartDate = sDate,
                 EndDate = eDate,
-                CareInfos = data,
+                CareInfos = (IList<CareViewModel>)data,
                 TotalExpensesForPeriod = totalExp,
             };
-            TempData["StartDate"] = model.StartDate;
-            TempData["EndDate"] = model.EndDate;
+            //TempData["StartDateCare"] = model.StartDate;
+            //TempData["EndDateCare"] = model.EndDate;
 
             return View(model);
         }
@@ -115,7 +156,7 @@ namespace CarsNotes.Controllers
                 CareInfos = await GetCareTypes(),
                 Date = DateTime.Now
             };
-            TempData["CarId"] = id;
+            //TempData["CarId"] = id;
 
             return View(model);
         }
@@ -136,15 +177,18 @@ namespace CarsNotes.Controllers
 
             if (ModelState.IsValid == false)
             {
-                model.CareInfos = await GetCareTypes();
+                model.CareInfos = (IList<CareType>)await GetCareTypes();
                 return View(model);
             }
+
 
             Care care = new Care()
             {
                 //Id = model.Id,
                 Date = model.Date,
-                Type = model.Type,
+
+                //CareTypeId = Convert.ToInt32(model.CareType),
+                CareTypeId = Convert.ToInt32(model.CareTypeId),
                 TypeDetails = model.TypeDetails ?? string.Empty,
                 Manifacturer = model.Manifacturer ?? string.Empty,
                 AdditionalInfo= model.AdditionalInfo ?? string.Empty,
@@ -163,9 +207,82 @@ namespace CarsNotes.Controllers
             };
             await context.Cares.AddAsync(care);
             await context.SaveChangesAsync();
-            return RedirectToAction("Index", "Care", new { id = model.Id, startDate = TempData["StartDate"], endDate = TempData["EndDate"] });
+            return RedirectToAction("Index", "Care", new { id = model.Id, startDate = TempData["StartDateCare"], endDate = TempData["EndDateCare"] });
         }
 
+         // ------------------------------------------------------ Edit
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            string currentUserId = GetCurrentUserId();
+
+            var care = await context.Cares
+                .Where(g => g.OwnerId == currentUserId)
+                .FirstOrDefaultAsync(g => g.Id == id);
+
+            if (care == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var model = new CareViewModel()
+            {
+                //Id = model.Id,
+                Date = care.Date,
+                CareInfos = await GetCareTypes(),
+                CareTypeId = care.CareTypeId,
+                TypeDetails = care.TypeDetails ?? string.Empty,
+                Manifacturer = care.Manifacturer ?? string.Empty,
+                AdditionalInfo= care.AdditionalInfo ?? string.Empty,
+                BuyedFrom = care.BuyedFrom ?? string.Empty,
+                Quantity = care.Quantity,
+                PriceMaterial = care.PriceMaterial,
+                PriceWork = care.PriceWork,
+                PriceTotal = care.PriceTotal,
+                IsPendingCare = care.IsPendingCare,
+
+                //CarId = (Guid)TempData["CarId"]
+                //CarId = care.Id
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(CareViewModel model)
+        {
+            string currentUserId = GetCurrentUserId();
+
+            var care = await context.Cares
+                .Where(g => g.OwnerId == currentUserId)
+                .FirstOrDefaultAsync(g => g.Id == model.Id);
+
+            if (care == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (ModelState.IsValid == false)
+            {
+                model.CareInfos = (IList<CareType>)await GetCareTypes();
+                return View(model);
+            }
+
+            care.Date = model.Date;
+            care.CareTypeId = model.CareTypeId;
+            care.TypeDetails = model.TypeDetails ?? string.Empty;
+            care.Manifacturer = model.Manifacturer ?? string.Empty;
+            care.AdditionalInfo = model.AdditionalInfo ?? string.Empty;
+            care.BuyedFrom = model.BuyedFrom ?? string.Empty;
+            care.Quantity = model.Quantity;
+            care.PriceMaterial = model.PriceMaterial;
+            care.PriceWork = model.PriceWork;
+            care.PriceTotal = model.PriceTotal;
+            care.IsPendingCare = model.IsPendingCare;
+            care.ModifiedOn = DateTime.Now;
+
+            await context.SaveChangesAsync();
+            return RedirectToAction("Index", "Care", new { id = TempData.Peek("CarId"), startDate = TempData.Peek("StartDateCare"), endDate = TempData.Peek("EndDateCare") });
+        }
 
         // ----------------------------------------------------------
         private string GetCurrentUserId()

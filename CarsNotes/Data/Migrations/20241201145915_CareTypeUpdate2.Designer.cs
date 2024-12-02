@@ -4,6 +4,7 @@ using CarsNotes.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarsNotes.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241201145915_CareTypeUpdate2")]
+    partial class CareTypeUpdate2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -230,7 +233,7 @@ namespace CarsNotes.Data.Migrations
                     b.Property<Guid>("CarId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("CareTypeId")
+                    b.Property<int?>("CareTypeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
@@ -269,6 +272,9 @@ namespace CarsNotes.Data.Migrations
 
                     b.Property<string>("TypeDetails")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -728,11 +734,9 @@ namespace CarsNotes.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CarsNotes.Data.Models.CareType", "CareType")
+                    b.HasOne("CarsNotes.Data.Models.CareType", null)
                         .WithMany("Cares")
-                        .HasForeignKey("CareTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CareTypeId");
 
                     b.HasOne("CarsNotes.Areas.Identity.Data.CarUser", "Owner")
                         .WithMany()
@@ -741,8 +745,6 @@ namespace CarsNotes.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Car");
-
-                    b.Navigation("CareType");
 
                     b.Navigation("Owner");
                 });

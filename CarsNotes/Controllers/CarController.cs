@@ -14,8 +14,9 @@ namespace CarsNotes.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            string currentUserId = GetCurrentUserId();
-            var model = await context.Cars
+            string currentUserId = GetCurrentUserId();            
+
+			var model = await context.Cars
                 .Where(g => g.IsDeleted == false)
                 .Where(g => g.OwnerId == currentUserId)
                 .Include(g => g.CarsOwner)
@@ -31,8 +32,7 @@ namespace CarsNotes.Controllers
                 .AsNoTracking()
                 .ToListAsync();
 
-
-            return View(model);
+			return View(model);
 
         }
         // ------------------------------------------------------ Add
@@ -94,13 +94,17 @@ namespace CarsNotes.Controllers
         {
             string currentUserId = GetCurrentUserId();
 
-            var car = await context.Cars
-                .FirstOrDefaultAsync(p => p.Id == id);
-                        
+			var car = await context.Cars
+                .FirstOrDefaultAsync(p => p.Id == id);          
+
+
             if (car == null || car.OwnerId != currentUserId)
             {
                 return RedirectToAction(nameof(Index));
             }
+
+            RemoveTempDataDates();
+            TempData["CarId"] = id;
 
             var model = new CarViewModel()
             {
@@ -133,7 +137,7 @@ namespace CarsNotes.Controllers
             };
 
             TempData["OwnerId"] = model.OwnerId;
-            TempData["CarId"] = model.Id;
+            //TempData["CarId"] = model.Id;
 
             return View(model);
         }
@@ -297,5 +301,12 @@ namespace CarsNotes.Controllers
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
+
+        private void RemoveTempDataDates()
+        {
+            TempData["StartDateCare"] = null;
+			TempData["EndDateCare"] = null;
+
+		}
     }
 }

@@ -9,65 +9,13 @@
 </div>
 <hr />
 
-<div class="row">
-    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <form asp-action="Add" method="post" enctype="multipart/form-data">
+<div class="col-sm-12 offset-lg-2 col-lg-8 ">
+    <form asp-action="Add" method="post" enctype="multipart/form-data">
 
+        @await Html.PartialAsync("_FuelViewPartial",Model) 
 
-            @await Html.PartialAsync("_FuelViewPartial",Model)
-
-            @*
-            <div class="col-sm-6 mb-2">
-                <label asp-for="@Model.Date" class="form-label-add-edit">Date</label>
-                <input asp-for="@Model.Date" class="form-control" aria-required="true" type="datetime-local" value="@Model.Date.ToString("yyyy-MM-ddTHH:mm")" />
-                <span asp-validation-for="@Model.Date" class="text-danger"></span>
-            </div>
-            <div class="mb-2">
-                <label asp-for="@Model.GasStation" class="form-label-add-edit">Gas Station</label>
-                <input asp-for="@Model.GasStation" class="form-control" aria-required="false" placeholder="Enter Gas Station" />
-                <span asp-validation-for="@Model.GasStation" class="text-danger"></span>
-            </div>
-            <div class="mb-2">
-                <label asp-for="@Model.City" class="form-label-add-edit">City</label>
-                <input asp-for="@Model.City" class="form-control" aria-required="false" placeholder="Enter City" />
-                <span asp-validation-for="@Model.City" class="text-danger"></span>
-            </div>
-            <div class="mb-2">
-                <label asp-for="@Model.Volume" class="form-label-add-edit">Volume</label>
-                <input asp-for="@Model.Volume" class="form-control" aria-required="false" placeholder="Enter Volume" />
-                <span asp-validation-for="@Model.Volume" class="text-danger"></span>
-            </div>
-            <div class="mb-2">
-                <label asp-for="@Model.GasType" class="form-label-add-edit">Gas Type</label>
-                <input asp-for="@Model.GasType" class="form-control" aria-required="false" placeholder="Enter GasType" />
-                <span asp-validation-for="@Model.GasType" class="text-danger"></span>
-            </div>
-            <div class="mb-2">
-                <label asp-for="@Model.PricePerLiter" class="form-label-add-edit">Price Per Littre</label>
-                <input asp-for="@Model.PricePerLiter" class="form-control" aria-required="false" placeholder="Enter Price Per Littre" />
-                <span asp-validation-for="@Model.PricePerLiter" class="text-danger"></span>
-            </div>
-            <div class="mb-2">
-                <label asp-for="@Model.PriceTotalFuel" class="form-label-add-edit">Price Total Fuel</label>
-                <input asp-for="@Model.PriceTotalFuel" class="form-control" aria-required="false" placeholder="Enter Price Total Fuel" />
-                <span asp-validation-for="@Model.PriceTotalFuel" class="text-danger"></span>
-            </div>
-            <div class="mb-2">
-                <label asp-for="@Model.KilometrageActual" class="form-label-add-edit">Kilometrage Actual</label>
-                <input asp-for="@Model.KilometrageActual" class="form-control" aria-required="false" placeholder="Enter Kilometrage Actual" />
-                <span asp-validation-for="@Model.KilometrageActual" class="text-danger"></span>
-            </div>
-            <div class="mb-2">
-                <input class="btn btn-success btn-dark-text w-100 py-2 fw-bold rounded" type="submit" value="Save" />
-            </div>
-            *@
-
-
-
-        </form>
-    </div>
+    </form>
 </div>
-
 
 @*
 <!-- Initial idea to replace the datetime fields with custom jQuery datepicker field. For the moment I'll leave the default one  -->

@@ -11,7 +11,7 @@ namespace CarsNotes.Models
         [Required]
         public DateTime Date { get; set; }
         [Required]
-        public string Type { get; set; }
+        public string Type { get; set; } = null!;
         public string? TypeDetails { get; set; }
         public string? Manifacturer { get; set; }
         public string? AdditionalInfo { get; set; }
@@ -19,12 +19,12 @@ namespace CarsNotes.Models
         public decimal PriceTotal { get; set; }
         public bool IsPendingCare { get; set; }
         [Required]
-        public string OwnerId { get; set; }
+        public string OwnerId { get; set; } = null!;
         [Required]
         public Guid CarId { get; set; }
         [ForeignKey(nameof(CarId))]
         public Car Car { get; set; }
-        public IList<Care> CareInfos { get; set; } = new List<Care>();
+        public IList<CareViewModel> CareInfos { get; set; } = new List<CareViewModel>();
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public decimal TotalExpensesForPeriod { get; set; }
