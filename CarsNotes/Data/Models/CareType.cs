@@ -12,7 +12,7 @@ namespace CarsNotes.Data.Models
         [Required]
         [MaxLength(100)]
         public string Name { get; set; } = null!;
-        public IList<Care> Cares { get; set; } = new List<Care>();
+        public ICollection<Care> Cares { get; set; } = new HashSet<Care>();
         [Comment("Soft Delete")]
         public bool IsDeleted { get; set; }
 

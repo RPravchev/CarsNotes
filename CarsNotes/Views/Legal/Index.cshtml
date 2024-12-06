@@ -1,0 +1,125 @@
+﻿@model LegalInfoViewModel
+@{
+    ViewData["Title"] = "Legal";
+    var today = DateTime.Now.ToString("dd-MM-yyyy");
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
+    <h2>@ViewData["Title"]</h2>
+    @if (User?.Identity?.IsAuthenticated == true)
+    {
+        <div>
+            <a asp-controller="Car" asp-action="Details" asp-route-id="@TempData.Peek("CarId")" class="btn btn-warning"><i class="fas fa-plus"></i>Back</a>
+            <a asp-controller="Legal" asp-action="Add" asp-route-id="@TempData.Peek("CarId")" class="btn btn-primary"><i class="fas fa-plus"></i>Add Legal</a>
+        </div>
+    }
+</div>
+<hr>
+
+<div class="row justify-content-center">
+    <div class="col-md-4 text-left" style="margin-top: 20px">
+        <form method="get">
+            <table @*border="1"*@>
+                <thead>
+                    <tr>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                    </tr>
+                <thead>
+                <tbody>
+					@*<th><input type="date" class="form-control" id="@Model.StartDate" name="startDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" /></th>
+					<th><input type="date" class="form-control" id="@Model.EndDate" name="endDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" /></th>*@
+                    <tr>
+                        <th><input type="date" class="form-control" id="@Model.StartDate" name="StartDate" value="@Model.StartDate?.ToString("yyyy-MM-dd")" /></th>
+                        <th><input type="date" class="form-control" id="@Model.EndDate" name="EndDate" value="@Model.EndDate?.ToString("yyyy-MM-dd")" /></th>
+                    </tr>
+                    <tr>
+                        <th>Type of Care</th>
+                        <th>
+                            @if(Model.LegalTypeList != null)
+                            {
+                                @foreach (var expense in @Model.LegalTypeList)
+                                {
+                                    if (Model.LegalTypesSelected.Contains(expense.Name))
+                                    {
+                                        <input type="checkbox" class="form-check-input" style="margin-right:6px;" aria-required="false" name="LegalTypesSelected" value=@expense.Name checked />@expense.Name<br />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" class="form-check-input" style="margin-right:6px;" aria-required="false" name="LegalTypesSelected" value=@expense.Name />@expense.Name<br />
+                                    }
+
+                                }
+                            }      
+                        </th>
+                    </tr>
+                    <th></th>
+                    <th style="padding-block: 10px;"><button type="submit" a-right>Filter</button></th>
+                    @if (Model.LegalInfos.Count() > 0)
+                    {               
+                        <tr>
+                        <th><p class="card-text"><small class="text-muted"><b>Expenses total: </b></small></th>
+                            <th><p class="card-text"><small class="text-muted">@Model.TotalExpensesForPeriod.ToString("# ###")</small></p></th>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </form>
+    </div>
+
+    @if (Model.LegalInfos.Count() > 0)
+    {
+        <div class="col-md-8" text-left>
+            <p> </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="padding-right:10px">Date Time </th>
+                        <th style="padding-right:10px">Type</th>
+                        <th style="padding-right:10px">Details </th>
+                        <th style="padding-right:10px">Valid From</th>
+                        <th style="padding-right:10px">Valid To</th>
+                        <th style="padding-right:10px">Insurer</th>
+                        <th style="padding-right:10px">Issuer</th>
+                        <th style="padding-right:10px">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int count = 1;
+                    }
+                    @foreach(var expense in Model.LegalInfos)
+                    {
+                        var rowClass = count % 2 == 0 ? "even-row" : "odd-row";
+                        count++;
+
+                        <tr class="@rowClass">
+                        <td><small class="text-muted" style="padding-right: 10px">@expense.Date.ToString("yyyy-MM-dd HH:mm")</small></td>
+                        <td><small class="text-muted" style="padding-right: 10px;" >@expense.LegalType</small></td>
+                        <td><small class="text-muted" style="padding-right: 10px">@expense.TypeDetails</small></td>
+                        <td><small class="text-muted" style="padding-right: 10px;">@expense.ValidFrom</small></td>
+                        <td><small class="text-muted" style="padding-right: 10px">@expense.ValidTo</small></td>
+                        <td><small class="text-muted" style="padding-right: 10px; display: grid; justify-content: center" >@expense.Insurer</small></td>
+                        <td><small class="text-muted" style="padding-right: 10px">@expense.Issuer</small></td>
+                        @if (expense.IsPayed == false)
+                        {
+                                <td><small class="text-muted" style="padding-right: 6px; display: grid; justify-content: center; background-color: lightsalmon; padding-right: 10px">@expense.Price</small></td>
+                        }
+                        else
+                        {
+                            <td><small class="text-muted" style="padding-right: 6px; display: grid; justify-content: center; padding-right: 10px">@expense.Price</small></td>
+                        }
+ 
+                        <td>                       
+                            <a asp-controller="Legal" asp-action="Edit" asp-route-id="@expense.Id" class="btn btn-primary">Edit</a>
+                        </td>
+ 
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+     }
+</div>
+
+

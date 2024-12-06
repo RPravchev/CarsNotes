@@ -1,0 +1,19 @@
+﻿@model LegalViewModel
+@{
+    ViewData["Title"] = "Add Legal";
+    var today = DateTime.Now.ToString("dd-MM-yyyy");
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
+    <h2>@ViewData["Title"]</h2>
+    <a asp-controller="Legal" asp-action="Index" asp-route-id="@TempData.Peek("CarId")" class="btn btn-warning"><i class="fas fa-plus"></i>Back</a>
+</div>
+<hr />
+
+<div class="col-sm-12 offset-lg-2 col-lg-8">
+    <form asp-controller="Legal" asp-action="Add" method="post" enctype="multipart/form-data">
+           
+        <partial name="_LegalViewPartial" />
+
+    </form>
+</div>

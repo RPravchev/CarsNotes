@@ -12,7 +12,7 @@ namespace CarsNotes.Data.Models
         [Required]
         [MaxLength(100)]
         public string Name { get; set; } = null!;
-        public IList<Legal> Legals { get; set; } = new List<Legal>();
+        public ICollection<Legal> Legals { get; set; } = new HashSet<Legal>();
         [Comment("Soft Delete")]
         public bool IsDeleted { get; set; }
 

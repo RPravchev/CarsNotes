@@ -40,9 +40,11 @@ namespace CarsNotes.Data
             builder
                 .Entity<LegalType>()
             .HasData(
-                new CareType { Id = 1, Name = "Insurance" },
-                new CareType { Id = 2, Name = "Technical Inspection" },
-                new CareType { Id = 3, Name = "Other" });
+                new LegalType { Id = 1, Name = "Inspection" },
+                new LegalType { Id = 2, Name = "Insurance" },
+                new LegalType { Id = 3, Name = "Tax" },
+                new LegalType { Id = 4, Name = "Vignette" },
+                new LegalType { Id = 5, Name = "Other" });
         }
 
     }

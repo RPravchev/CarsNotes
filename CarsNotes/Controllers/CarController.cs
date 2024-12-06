@@ -306,7 +306,8 @@ namespace CarsNotes.Controllers
         {
             TempData["StartDateCare"] = null;
 			TempData["EndDateCare"] = null;
-
-		}
+            TempData["StartDateLegal"] = null;
+            TempData["EndDateLegal"] = null;
+        }
     }
 }

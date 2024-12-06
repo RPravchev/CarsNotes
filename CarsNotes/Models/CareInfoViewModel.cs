@@ -6,6 +6,7 @@ namespace CarsNotes.Models
 {
     public class CareInfoViewModel
     {
+        /*
         [Key]
         public Guid Id { get; set; }
         [Required]
@@ -24,10 +25,11 @@ namespace CarsNotes.Models
         public Guid CarId { get; set; }
         [ForeignKey(nameof(CarId))]
         public Car Car { get; set; }
+        */
         public IList<CareViewModel> CareInfos { get; set; } = new List<CareViewModel>();
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public decimal TotalExpensesForPeriod { get; set; }
-        public bool IsDeleted { get; set; }
+        //public bool IsDeleted { get; set; }
     }
 }

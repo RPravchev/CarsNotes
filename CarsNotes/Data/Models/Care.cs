@@ -10,7 +10,6 @@ namespace CarsNotes.Data.Models
         public Guid Id { get; set; }
         [Required]
         public DateTime Date { get; set; }
-
         public string? TypeDetails { get; set; }
         public string? Manifacturer { get; set; }
         public string? AdditionalInfo { get; set; }

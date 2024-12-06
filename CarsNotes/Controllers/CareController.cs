@@ -71,26 +71,20 @@ namespace CarsNotes.Controllers
             var car = await context.Cars
                 .Where(g => g.OwnerId == currentUserId)
                 .FirstOrDefaultAsync(c => c.Id == id);
+
             if (car == null)
             {
                 return RedirectToAction("Details", "Car");
             }
 
             var query = context.Cares
-				//.Include(g => g.id == CareType.Id)
-				.Where(e => e.Date >= sDate)
+                .Where(e => e.CarId == id)
+                .Where(e => e.Date >= sDate)
 				.Where(e => e.Date <= eDate)
+                .Where(e => e.IsDeleted == false)
 				.AsQueryable();
-            /*
-            if (startDate.HasValue)
-                query = query.Where(e => e.Date >= startDate.Value);
-
-            if (endDate.HasValue)
-                query = query.Where(e => e.Date <= endDate.Value);
-            */
 
             var data = await query
-                .Where(e => e.CarId == id)
                 .OrderByDescending(e => e.Date)
                 .Include(e => e.CareType)
                 .Select(e => new CareViewModel()
@@ -102,14 +96,14 @@ namespace CarsNotes.Controllers
                     Date = e.Date,
                     TypeDetails = e.TypeDetails,
                     Manifacturer = e.Manifacturer,
-                    AdditionalInfo = e.AdditionalInfo,
+                    //AdditionalInfo = e.AdditionalInfo,
                     BuyedFrom = e.BuyedFrom,
-                    Quantity = e.Quantity,
-                    PriceMaterial = e.PriceMaterial,
-                    PriceWork = e.PriceWork,
-                    IsDeleted = e.IsDeleted,
+                    //Quantity = e.Quantity,
+                    //PriceMaterial = e.PriceMaterial,
+                    //PriceWork = e.PriceWork,
+                    //IsDeleted = e.IsDeleted,
                     IsPendingCare = e.IsPendingCare,
-                    CarId = id
+                    //CarId = id
 
                 })
                 .AsNoTracking()
@@ -227,7 +221,7 @@ namespace CarsNotes.Controllers
 
             var model = new CareViewModel()
             {
-                //Id = model.Id,
+                Id = care.Id,
                 Date = care.Date,
                 CareInfos = await GetCareTypes(),
                 CareTypeId = care.CareTypeId,
@@ -282,6 +276,25 @@ namespace CarsNotes.Controllers
 
             await context.SaveChangesAsync();
             return RedirectToAction("Index", "Care", new { id = TempData.Peek("CarId"), startDate = TempData.Peek("StartDateCare"), endDate = TempData.Peek("EndDateCare") });
+        }
+        // ---------------------------------------------------------- Delete
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            string currentUserId = GetCurrentUserId();
+
+            var care = await context.Cares
+                .Where(g => g.OwnerId == currentUserId)
+                .FirstOrDefaultAsync(g => g.Id == id);
+
+            if (care == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            care.IsDeleted = true;
+
+            await context.SaveChangesAsync();
+            return RedirectToAction("Index", "Care", new { id = care.CarId });
         }
 
         // ----------------------------------------------------------

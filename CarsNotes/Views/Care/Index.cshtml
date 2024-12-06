@@ -20,7 +20,7 @@
 <div class="row justify-content-center">
     <div class="col-md-4 text-left" style="margin-top: 20px">
         <form method="get">
-            <table @*border="1"*@>
+            <table>
                 <thead>
                     <tr>
                         <th>Start Date</th>
@@ -81,7 +81,7 @@
                             <td><small class="text-muted" style="padding-right: 10px">@expense.BuyedFrom</small></td>
                                 @if (expense.IsPendingCare == true)
                                 {
-                                    <td><small class="text-muted" style="padding-right: 6px; display: grid; justify-content: center; background-color: lightyellow; padding-right: 10px">@expense.PriceTotal.ToString("# ###")</small></td>
+                                    <td><small class="text-muted" style="padding-right: 6px; display: grid; justify-content: center; background-color: lightsalmon; padding-right: 10px">@expense.PriceTotal.ToString("# ###")</small></td>
                                 }
                                 else
                                 {
