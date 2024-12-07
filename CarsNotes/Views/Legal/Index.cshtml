@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Legal";
     var today = DateTime.Now.ToString("dd-MM-yyyy");
+    bool isData = Model.LegalInfos.Count() > 0;
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
@@ -31,11 +32,13 @@
                         <th><input type="date" class="form-control" id="@Model.StartDate" name="StartDate" value="@Model.StartDate?.ToString("yyyy-MM-dd")" /></th>
                         <th><input type="date" class="form-control" id="@Model.EndDate" name="EndDate" value="@Model.EndDate?.ToString("yyyy-MM-dd")" /></th>
                     </tr>
+                    @if (isData)
+                    { 
                     <tr>
                         <th>Type of Care</th>
                         <th>
-                            @if(Model.LegalTypeList != null)
-                            {
+                            @*@if(Model.LegalTypeList != null)
+                            {*@
                                 @foreach (var expense in @Model.LegalTypeList)
                                 {
                                     if (Model.LegalTypesSelected != null && Model.LegalTypesSelected.Contains(expense.Name))
@@ -48,12 +51,13 @@
                                     }
 
                                 }
-                            }      
+                            @*}*@      
                         </th>
                     </tr>
+                    }
                     <th></th>
                     <th style="padding-block: 10px;"><button type="submit" a-right>Filter</button></th>
-                    @if (Model.LegalInfos.Count() > 0)
+                    @if (isData)
                     {               
                         <tr>
                         <th><p class="card-text"><small class="text-muted"><b>Expenses total: </b></small></th>
@@ -65,7 +69,7 @@
         </form>
     </div>
 
-    @if (Model.LegalInfos.Count() > 0)
+    @if (isData)
     {
         <div class="col-md-8" text-left>
             <p> </p>

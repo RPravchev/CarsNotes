@@ -305,7 +305,7 @@ namespace CarsNotes.Controllers
         private void RemoveTempData()
         {
             TempData["StartDateFuel"] = null;
-            TempData["StartEndFuel"] = null;
+            TempData["EndDateFuel"] = null;
             TempData["StartDateCare"] = null;
 			TempData["EndDateCare"] = null;
             TempData["StartDateLegal"] = null;

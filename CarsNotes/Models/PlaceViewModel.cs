@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CarsNotes.Data.Models;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
+using System.ComponentModel.DataAnnotations;
 
-namespace CarsNotes.Data.Models
+namespace CarsNotes.Web.Models
 {
-    public class Place
+    public class PlaceViewModel
     {
         [Key]
         public Guid Id { get; set; }

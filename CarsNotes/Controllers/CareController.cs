@@ -36,7 +36,6 @@ namespace CarsNotes.Controllers
 			else
             {
                 sDate = new DateTime(DateTime.Now.Year, 1, 1);
-                //sDate = DateTime.Today.AddDays(-30);
 				TempData["StartDateCare"] = sDate;
 			}
 

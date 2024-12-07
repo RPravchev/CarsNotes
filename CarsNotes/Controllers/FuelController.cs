@@ -22,7 +22,7 @@ namespace CarsNotes.Controllers
         {
             DateTime sDate = DateTime.Now;
             DateTime eDate = DateTime.Now;
-
+            TempData.Remove("StartEndFuel");
             if(startDate == null && TempData["StartDateFuel"]==null)
             {
                 // StartDate = today - 30 days
