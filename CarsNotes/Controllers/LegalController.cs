@@ -147,12 +147,9 @@ namespace CarsNotes.Controllers
                 .AsNoTracking()
                 .ToListAsync();
 
-            decimal totalExp = 0;
 
-            for (int f = 0; f < data.Count; f++)
-            {
-                totalExp += (decimal)data[f].Price;
-            }
+
+                
 
             List<LegalType> actualTypes = data
                 .Select(g => new LegalType()
@@ -163,9 +160,37 @@ namespace CarsNotes.Controllers
                 .DistinctBy(g => g.Id)
                 .ToList();
 
-            data = data
-                .Where(g => infoModel.LegalTypesSelected.Contains(g.LegalType))
-                .ToList();
+
+
+            if (TempData.Peek("LegalTypesSelected") == null)
+            {
+                infoModel.LegalTypesSelected = actualTypes.Select(g=>g.Name).ToList();
+                TempData["LegalTypesSelected"] = infoModel.LegalTypesSelected;
+                data = data
+                    .Where(g => infoModel.LegalTypesSelected.Contains(g.LegalType))
+                    .ToList();
+
+            }
+            else
+            {
+                if (infoModel.LegalTypesSelected.Count == 0)
+                {
+                    infoModel.LegalTypesSelected = (IList<string>)TempData["LegalTypesSelected"];
+                }
+                TempData["LegalTypesSelected"] = infoModel.LegalTypesSelected;
+                data = data
+                    .Where(g => infoModel.LegalTypesSelected.Contains(g.LegalType))
+                    .ToList();
+                
+            }
+
+            decimal totalExp = 0;
+
+            for (int f = 0; f < data.Count; f++)
+            {
+                totalExp += (decimal)data[f].Price;
+            }
+
             /*
             var b = new List<string>();
 
@@ -184,7 +209,8 @@ namespace CarsNotes.Controllers
                 EndDate = infoModel.EndDate,
                 LegalInfos = (IList<LegalViewModel>)data,
                 TotalExpensesForPeriod = totalExp,
-                LegalTypesSelected = infoModel.LegalTypesSelected,
+                //LegalTypesSelected = infoModel.LegalTypesSelected,
+                LegalTypesSelected = (IList<string>)TempData.Peek("LegalTypesSelected"),
                 LegalTypeList = actualTypes
             };
 

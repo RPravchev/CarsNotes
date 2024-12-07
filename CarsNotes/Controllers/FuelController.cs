@@ -72,6 +72,7 @@ namespace CarsNotes.Controllers
 
             var data = await query
                 .Where(e => e.CarId == id)
+                .Where(e => e.IsDeleted == false)
                 .OrderByDescending(e => e.Date)
                 .AsNoTracking()
                 .ToListAsync();
@@ -274,6 +275,26 @@ namespace CarsNotes.Controllers
 
             await context.SaveChangesAsync();
             return RedirectToAction("Index", "Fuel", new { id = fuel.CarId, startDate = TempData["StartDate"], endDate = TempData["EndDate"] });
+        }
+
+        // ---------------------------------------------------------- Delete
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            string currentUserId = GetCurrentUserId();
+
+            var fuel = await context.Fuels
+                .Where(g => g.OwnerId == currentUserId)
+                .FirstOrDefaultAsync(g => g.Id == id);
+
+            if (fuel == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            fuel.IsDeleted = true;
+
+            await context.SaveChangesAsync();
+            return RedirectToAction("Index", "Fuel", new { id = fuel.CarId });
         }
 
         // ----------------------------------------------------------

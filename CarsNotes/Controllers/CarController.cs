@@ -103,7 +103,7 @@ namespace CarsNotes.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            RemoveTempDataDates();
+            RemoveTempData();
             TempData["CarId"] = id;
 
             var model = new CarViewModel()
@@ -302,12 +302,13 @@ namespace CarsNotes.Controllers
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
 
-        private void RemoveTempDataDates()
+        private void RemoveTempData()
         {
             TempData["StartDateCare"] = null;
 			TempData["EndDateCare"] = null;
             TempData["StartDateLegal"] = null;
             TempData["EndDateLegal"] = null;
+            TempData["LegalTypesSelected"] = null;
         }
     }
 }

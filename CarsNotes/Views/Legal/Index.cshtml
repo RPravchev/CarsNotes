@@ -40,7 +40,7 @@
                             {
                                 @foreach (var expense in @Model.LegalTypeList)
                                 {
-                                    if (Model.LegalTypesSelected.Contains(expense.Name))
+                                    if (Model.LegalTypesSelected != null && Model.LegalTypesSelected.Contains(expense.Name))
                                     {
                                         <input type="checkbox" class="form-check-input" style="margin-right:6px;" aria-required="false" name="LegalTypesSelected" value=@expense.Name checked />@expense.Name<br />
                                     }
