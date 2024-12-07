@@ -147,7 +147,7 @@
             <ul class="pagination">
                 <!-- Previous Page Link -->
                 <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
-                    <a class="page-link" href="?page=@(Model.CurrentPage - 1)&startDate=@Model.StartDate&endDate=@Model.EndDate">Previous</a>
+                        <a class="page-link" href="?page=@(Model.CurrentPage - 1)&startDate=@Model.StartDate&endDate=@Model.EndDate">Previous</a>
                 </li>
 
                 <!-- Page Numbers -->
@@ -160,7 +160,7 @@
 
                 <!-- Next Page Link -->
                 <li class="page-item @(Model.CurrentPage == totalPages ? "disabled" : "")">
-                    <a class="page-link" href="?page=@(Model.CurrentPage + 1)&startDate=@Model.StartDate&endDate=@Model.EndDate">Next</a>
+                        <a class="page-link" href="?page=@(Model.CurrentPage + 1)&startDate=@Model.StartDate&endDate=@Model.EndDate">Next</a>
                 </li>
             </ul>
         </nav>

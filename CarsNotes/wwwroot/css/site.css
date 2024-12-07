@@ -48,4 +48,25 @@ header {
 .even-row {
     background-color: #fdf3e6; /* Light grey for even rows in the table */
 }
+
+.pagination .page-link {
+    background-color: #cabfbf; /* Custom blue background */
+    color: #ffffff; /* White text */
+}
+
+.pagination .page-link:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    color: #ffffff; /* Keep text white */
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #a4aebd; /* Green background for active page */
+    border-color: #28a745; /* Match the border color */
+    color: #ffffff; /* White text */
+}
+.pagination .page-item.disabled .page-link {
+    background-color: #a4aebd; /* Green background for active page */
+    color: #ffffff; /* White text */
+}
+
 /* -------- custom section ----------- end */
