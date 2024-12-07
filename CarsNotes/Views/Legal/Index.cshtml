@@ -1,4 +1,4 @@
-﻿@model LegalInfoViewModel
+﻿@model LegalFilterViewModel
 @{
     ViewData["Title"] = "Legal";
     var today = DateTime.Now.ToString("dd-MM-yyyy");
@@ -27,8 +27,6 @@
                     </tr>
                 <thead>
                 <tbody>
-					@*<th><input type="date" class="form-control" id="@Model.StartDate" name="startDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" /></th>
-					<th><input type="date" class="form-control" id="@Model.EndDate" name="endDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" /></th>*@
                     <tr>
                         <th><input type="date" class="form-control" id="@Model.StartDate" name="StartDate" value="@Model.StartDate?.ToString("yyyy-MM-dd")" /></th>
                         <th><input type="date" class="form-control" id="@Model.EndDate" name="EndDate" value="@Model.EndDate?.ToString("yyyy-MM-dd")" /></th>

@@ -16,11 +16,10 @@
     }
 </div>
 <hr>
-@if (Model.FuelInfos.Count>0)
-{
-    <div class="row justify-content-center">
-    <div class="col-md-4 text-left" style="margin-top: 20px">
-        <form method="get">
+
+<div class="row justify-content-center">
+<div class="col-md-4 text-left" style="margin-top: 20px">
+    <form method="get">
         <table @*border="1"*@>
             <thead>
                 <tr>
@@ -35,45 +34,51 @@
                 </tr>
                 <th></th>
                 <th style="padding-block: 10px;"><button type="submit" a-right>Filter</button></th>
-                <tr>
-                    <th><p class="card-text"><small class="text-muted"><b>Fuel total: </b></small></th>
-                    <th><p class="card-text"><small class="text-muted">@Model.TotalFuelQtyForPeriod.ToString("# ###")</small></p></th>
-                </tr>
-                <tr>
-                    <th><p class="card-text"><small class="text-muted"><b>Expenses total: </b></small></th>
-                    <th><p class="card-text"><small class="text-muted">@Model.TotalFuelExpensesForPeriod.ToString("# ###")</small></p></th>
-                </tr>
-                <tr>
-                    <th><p class="card-text"><small class="text-muted"><b>Price Avg.: </b></small></th>
-                    <th><p class="card-text"><small class="text-muted">@Model.AveragePrice</small></p></th>
-                </tr>
-                <tr>
-                    <th><p></p></th>
-                </tr>
-                <tr>
-                    <th><p class="card-text"><small class="text-muted"><b>Kilometrage End: </b></small></th>
-                    <th><p class="card-text"><small class="text-muted">@Model.KilometrageLast.ToString("# ###")</small></p></th>
-                </tr>
-                <tr>
-                    <th><p class="card-text"><small class="text-muted"><b>Kilometrage Start: </b></small></th>
-                    <th><p class="card-text"><small class="text-muted">@Model.KilometrageFirst.ToString("# ###")</small></p></th>
-                </tr>
-                <tr>
-                    <th><p class="card-text"><small class="text-muted"><b>Distance: </b></small></th>
-                    <th><p class="card-text"><small class="text-muted">@Model.Distance.ToString("# ###")</small></p></th>
-                </tr>
-                <tr>
-                    <th><p class="card-text"><small class="text-muted"><b>Fuel Consumption: </b></small></th>
-                    <th><p class="card-text"><small class="text-muted">@Model.FuelConsumption.ToString("# ###")</small></p></th>
-                </tr>
-                <tr>
-                    <th><p class="card-text"><small class="text-muted"><b>Fuel Consumption Avg.: </b></small></th>
-                    <th><p class="card-text"><small class="text-muted">@Model.FuelConsumptionAvarage</small></p></th>
-                </tr>
-             </tbody>
+
+                @if (Model.FuelInfos.Count > 0)
+                {
+                    <tr>
+                        <th><p class="card-text"><small class="text-muted"><b>Fuel total: </b></small></th>
+                        <th><p class="card-text"><small class="text-muted">@Model.TotalFuelQtyForPeriod.ToString("# ###")</small></p></th>
+                    </tr>
+                    <tr>
+                        <th><p class="card-text"><small class="text-muted"><b>Expenses total: </b></small></th>
+                        <th><p class="card-text"><small class="text-muted">@Model.TotalFuelExpensesForPeriod.ToString("# ###")</small></p></th>
+                    </tr>
+                    <tr>
+                        <th><p class="card-text"><small class="text-muted"><b>Price Avg.: </b></small></th>
+                        <th><p class="card-text"><small class="text-muted">@Model.AveragePrice</small></p></th>
+                    </tr>
+                    <tr>
+                        <th><p></p></th>
+                    </tr>
+                    <tr>
+                        <th><p class="card-text"><small class="text-muted"><b>Kilometrage End: </b></small></th>
+                        <th><p class="card-text"><small class="text-muted">@Model.KilometrageLast.ToString("# ###")</small></p></th>
+                    </tr>
+                    <tr>
+                        <th><p class="card-text"><small class="text-muted"><b>Kilometrage Start: </b></small></th>
+                        <th><p class="card-text"><small class="text-muted">@Model.KilometrageFirst.ToString("# ###")</small></p></th>
+                    </tr>
+                    <tr>
+                        <th><p class="card-text"><small class="text-muted"><b>Distance: </b></small></th>
+                        <th><p class="card-text"><small class="text-muted">@Model.Distance.ToString("# ###")</small></p></th>
+                    </tr>
+                    <tr>
+                        <th><p class="card-text"><small class="text-muted"><b>Fuel Consumption: </b></small></th>
+                        <th><p class="card-text"><small class="text-muted">@Model.FuelConsumption.ToString("# ###")</small></p></th>
+                    </tr>
+                    <tr>
+                        <th><p class="card-text"><small class="text-muted"><b>Fuel Consumption Avg.: </b></small></th>
+                        <th><p class="card-text"><small class="text-muted">@Model.FuelConsumptionAvarage</small></p></th>
+                    </tr>
+                }
+            </tbody>
         </table>
-        </form>
-    </div>
+    </form>
+</div>
+@if (Model.FuelInfos.Count > 0)
+{
     <div class="col-md-8" text-left>
         <p> </p>
         <table>
@@ -90,7 +95,6 @@
                 </tr>
             </thead>
             <tbody>
-                @*@foreach (var fuel in Model)*@
                 @for (int i = 0; i < Model.FuelInfos.Count; i++)
                 {
                     var expense = Model.FuelInfos[i];
@@ -121,7 +125,47 @@
             </tbody>
         </table>
     </div>
-</div>
 }
+<!-- Pagination Controls -->
+<div>
+    @if (Model.TotalPages > Model.PageSize)
+    {
+        int totalPages = (int)Math.Ceiling((double)Model.TotalPages / Model.PageSize);
+        int maxPageLinks = 5; // Maximum number of page links to show
+
+        // Calculate the range of pages to display
+        int startPage = Math.Max(1, Model.CurrentPage - maxPageLinks / 2);
+        int endPage = Math.Min(totalPages, startPage + maxPageLinks - 1);
+
+        // Adjust startPage if at the end of the range
+        if (endPage - startPage + 1 < maxPageLinks)
+        {
+            startPage = Math.Max(1, endPage - maxPageLinks + 1);
+        }        
+
+        <nav class="d-flex justify-content-end" style="padding-top: 10px">
+            <ul class="pagination">
+                <!-- Previous Page Link -->
+                <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                    <a class="page-link" href="?page=@(Model.CurrentPage - 1)&startDate=@Model.StartDate&endDate=@Model.EndDate">Previous</a>
+                </li>
+
+                <!-- Page Numbers -->
+                @for (int i = startPage; i <= endPage; i++)
+                {
+                    <li class="page-item @(Model.CurrentPage == i ? "active" : "")">
+                        <a class="page-link" href="?page=@i&startDate=@Model.StartDate&endDate=@Model.EndDate">@i</a>
+                    </li>
+                }
+
+                <!-- Next Page Link -->
+                <li class="page-item @(Model.CurrentPage == totalPages ? "disabled" : "")">
+                    <a class="page-link" href="?page=@(Model.CurrentPage + 1)&startDate=@Model.StartDate&endDate=@Model.EndDate">Next</a>
+                </li>
+            </ul>
+        </nav>
+    }
+</div>
+
 
 

@@ -22,53 +22,9 @@ namespace CarsNotes.Controllers
     [Authorize]
     public class LegalController(ApplicationDbContext context) : Controller
     {
-        //public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate, Guid id)
-        public async Task<IActionResult> Index(LegalInfoViewModel infoModel, Guid id)
+        public async Task<IActionResult> Index(LegalFilterViewModel infoModel, Guid id)
         {
-            // ----------------------------------------- Date logic --- start
-            /*
-            DateTime sDate = DateTime.Now;
-            DateTime eDate = DateTime.Now;
-
-            if (startDate != null)
-            {
-                sDate = (DateTime)startDate;
-                TempData["StartDateLegal"] = sDate;
-            }
-            else if (TempData.Peek("StartDateLegal") != null)
-            {
-                sDate = (DateTime)TempData.Peek("StartDateLegal");
-            }
-            else
-            {
-                sDate = new DateTime(DateTime.Now.Year, 1, 1);
-                TempData["StartDateLegal"] = sDate;
-            }
-
-            if (endDate != null)
-            {
-                if (endDate.Value.Second == 59)
-                {
-                    eDate = (DateTime)endDate;
-                }
-                else
-                {
-                    eDate = (DateTime)endDate.Value.AddDays(1).AddSeconds(-1);
-                }
-                TempData["EndDateLegal"] = eDate;
-            }
-            else if (TempData.Peek("EndDateLegal") != null)
-            {
-                eDate = (DateTime)TempData.Peek("EndDateLegal");
-            }
-            else
-            {
-                eDate = DateTime.Today.AddDays(1).AddSeconds(-1);
-                TempData["EndDateLegal"] = eDate;
-            }
-            */
-            // ----------------------------------------- Date logic --- end
-            // ----------------------------------------- Type of Care logic --- start
+            // ----------------------------------------- Type of Care Date logic --- start
             if (infoModel.StartDate != null)
             {
                 TempData["StartDateLegal"] = infoModel.StartDate;
@@ -103,8 +59,7 @@ namespace CarsNotes.Controllers
 
             var t = infoModel.LegalTypesSelected;
             
-
-            // ----------------------------------------- Type of Care logic --- end
+            // ----------------------------------------- Type of Care Date logic --- end
 
 
 
@@ -146,9 +101,6 @@ namespace CarsNotes.Controllers
                 })
                 .AsNoTracking()
                 .ToListAsync();
-
-
-
                 
 
             List<LegalType> actualTypes = data
@@ -191,17 +143,8 @@ namespace CarsNotes.Controllers
                 totalExp += (decimal)data[f].Price;
             }
 
-            /*
-            var b = new List<string>();
 
-            foreach(var a in actualTypes)
-            {
-                b.Add(a.LegalType);
-            }
-            infoModel.LegalTypesSelected = b;
-            */
-
-            var model = new LegalInfoViewModel
+            var model = new LegalFilterViewModel
             {
                 //StartDate = sDate,
                 //EndDate = eDate,

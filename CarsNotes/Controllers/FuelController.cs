@@ -18,37 +18,33 @@ namespace CarsNotes.Controllers
     {
 
         [HttpGet]
-        public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate, Guid id)
+        public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate, Guid id, int page = 1)
         {
             DateTime sDate = DateTime.Now;
             DateTime eDate = DateTime.Now;
-            // The time of 'startDate' should be with HH:mm:ss = 00:00:00
-            // The time of 'endDate' should be with HH:mm:ss = 23:59:59
-            if(startDate == null && TempData["StartDate"]==null)
+
+            if(startDate == null && TempData["StartDateFuel"]==null)
             {
-                //startDate = DateTime.Today.AddDays(-30);
+                // StartDate = today - 30 days
                 sDate= DateTime.Today.AddDays(-30);
             }
             else if(startDate == null)
             {
-                //startDate = (DateTime?)TempData["StartDate"];
-                sDate = (DateTime)TempData["StartDate"];
+                sDate = (DateTime)TempData["StartDateFuel"];
             }
             else { sDate = (DateTime)startDate; }
 
-            if (endDate == null && TempData["EndDate"] == null)
+            if (endDate == null && TempData["EndDateFuel"] == null)
             {
-                //endDate = DateTime.Today.AddDays(1).AddSeconds(-1);
+                // EndDate = today at 23:59:59
                 eDate = DateTime.Today.AddDays(1).AddSeconds(-1);
             }
             else if (endDate == null)
             {
-                //endDate = (DateTime?)TempData["EndDate"];
-                eDate = (DateTime)TempData["EndDate"];
+                eDate = (DateTime)TempData["EndDateFuel"];
             }
             else
             {
-                //endDate = endDate.Value.AddDays(1).AddSeconds(-1);
                 eDate = endDate.Value.AddDays(1).AddSeconds(-1);
             }
             string currentUserId = GetCurrentUserId();
@@ -62,17 +58,14 @@ namespace CarsNotes.Controllers
                 return RedirectToAction("Details", "Car");
             }
 
-            var query = context.Fuels.AsQueryable();
-
-            if (startDate.HasValue)
-                query = query.Where(e => e.Date >= startDate.Value);
-
-            if (endDate.HasValue)
-                query = query.Where(e => e.Date <= endDate.Value);
-
-            var data = await query
+            var query = context.Fuels
+                .Where(e => e.Date >= sDate)
+                .Where(e => e.Date <= eDate)
                 .Where(e => e.CarId == id)
                 .Where(e => e.IsDeleted == false)
+                .AsQueryable();
+
+            IList<Fuel>? data = await query
                 .OrderByDescending(e => e.Date)
                 .AsNoTracking()
                 .ToListAsync();
@@ -120,12 +113,22 @@ namespace CarsNotes.Controllers
                 fuelConsumptionAvarage = (fuelConsumption / distance * 100).ToString("0.0");
             }
 
+            // --- Pagination start
+            int pageSize = 10;
+            int totalPages = data.Count() ;
+
+            var dataRows = data
+                .Skip((page - 1) * pageSize) // Skip items for previous pages
+                .Take(pageSize);              // Take only items for the current page
+            // --- Pagination end
+
+
 
             var model = new FuelInfoViewModel
             {
                 StartDate = sDate,
                 EndDate = eDate,
-                FuelInfos = data,
+                FuelInfos = (IList<Fuel>)dataRows,
                 TotalFuelExpensesForPeriod = totalExp,
                 TotalFuelQtyForPeriod = totalFuel,
                 AveragePrice = avgPrice,
@@ -133,10 +136,14 @@ namespace CarsNotes.Controllers
                 KilometrageLast = kilometrageLast,
                 FuelConsumption = fuelConsumption,
                 Distance = distance,
-                FuelConsumptionAvarage = fuelConsumptionAvarage
+                FuelConsumptionAvarage = fuelConsumptionAvarage,
+                CurrentPage = page,
+                TotalPages = totalPages,
+                PageSize = pageSize
             };
-            TempData["StartDate"] = model.StartDate;
-            TempData["EndDate"] = model.EndDate;
+            TempData["StartDateFuel"] = model.StartDate;
+            TempData["EndDateFuel"] = model.EndDate;            
+
 
             return View(model);
         }

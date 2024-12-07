@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarsNotes.Models
 {
-    public class LegalInfoViewModel
+    public class LegalFilterViewModel
     {
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
