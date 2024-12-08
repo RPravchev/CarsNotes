@@ -1,0 +1,114 @@
+﻿@using CarsNotes.Web.Models
+@model PlaceViewModel
+
+<div class="col-sm-12 mb-2 d-flex">
+    <div class="col-sm-6">
+
+        <!-- Leaflet Map -->
+        <div id="map" style="width: 94%; height: 94%; margin-top: 20px;"></div>
+
+        <!-- Leaflet CSS -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous" />
+
+        <!-- Leaflet JS -->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                let latitudeString = document.getElementById('Latitude').value;
+                let longitudeString = document.getElementById('Longitude').value;
+                if (latitudeString == 0) {
+                    document.getElementById('Latitude').value = 42.649954
+                    latitudeString = "42.649954"
+                }
+                if (longitudeString == 0) {
+                    document.getElementById('Longitude').value = 23.337085
+                    longitudeString = "23.337085"
+                }
+                const latitude = parseFloat(latitudeString.replace(',', '.'));
+                const longitude = parseFloat(longitudeString.replace(',', '.'));
+                // Initialize the map
+                const map = L.map('map').setView([latitude ?? 42.692, longitude ?? 23.321], 16 ?? 9);
+                //const map = L.map('map').setView([42.692, 23.321], 11);
+
+                // Add OpenStreetMap tiles
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors'
+                }).addTo(map);
+
+                // Add click event to the map
+                map.on('click', function (e) {
+                    const latitude = e.latlng.lat.toFixed(6);
+                    const longitude = e.latlng.lng.toFixed(6);
+
+                    // Update the fields with the clicked coordinates
+                    document.getElementById('Latitude').value = latitude;
+                    document.getElementById('Longitude').value = longitude;
+                });
+
+                // Fly to the entered location when button is clicked
+                document.getElementById('FlyToLocation').addEventListener('click', function () {
+                    const latitude = parseFloat(document.getElementById('Latitude').value.replace(',', '.'));
+                    const longitude = parseFloat(document.getElementById('Longitude').value.replace(',', '.'));
+
+                    // Validate coordinates
+                    if (!isNaN(latitude) && !isNaN(longitude) && latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180) {
+                        // Fly to the entered coordinates
+                        map.flyTo([latitude, longitude], 15);
+
+                        // Add a marker at the new location
+                        L.popup()
+                            .setLatLng([latitude, longitude])
+                            .setContent(`Place name: ${document.getElementById('Name').value}`)
+                            .openOn(map);
+                    } else {
+                        alert('Please enter valid latitude and longitude values.');
+                    }
+                });
+            });
+        </script>
+
+    </div>
+    <div class="col-sm-6 mb-2">
+        <div class="col-sm-5 mb-2" style="padding-right: 16px;">
+            <label asp-for="@Model.Date" class="form-label-add-edit">Date</label>
+            <input asp-for="@Model.Date" class="form-control" aria-required="true" type="datetime-local" value="@Model.Date.ToString("yyyy-MM-ddTHH:mm")" />
+            <span asp-validation-for="@Model.Date" class="text-danger"></span>
+        </div>
+        <div class="mb-2">
+            <label asp-for="@Model.Name" class="form-label-add-edit">Place Name</label>
+            <input asp-for="@Model.Name" class="form-control" aria-required="false" placeholder="Enter Place Name" />
+            <span asp-validation-for="@Model.Name" class="text-danger"></span>
+        </div>
+        <div class="mb-2 d-flex align-items-center">
+            <div class="col-sm-5" style="padding-right: 10px; margin-right: 10px;">
+                <label asp-for="@Model.Latitude" class="form-label-add-edit">Latitude</label>
+                <input asp-for="@Model.Latitude" class="form-control" aria-required="false" value="@Model.Latitude" placeholder="Enter Latitude" />
+                <span asp-validation-for="@Model.Latitude" class="text-danger"></span>
+            </div>
+            <div class="col-sm-5" style="padding-right: 10px;">
+                <label asp-for="@Model.Longitude" class="form-label-add-edit">Longitude</label>
+                <input asp-for="@Model.Longitude" class="form-control" aria-required="false" value="@Model.Longitude" placeholder="Enter Longitude" />
+                <span asp-validation-for="@Model.Longitude" class="text-danger"></span>
+            </div>
+            <div class="col-sm-2" style="padding-top: 23px;">
+                <form method="post">
+                    <button type="button" id="FlyToLocation">Find on Map</button>
+                </form>
+            </div>
+        </div>
+        <div class="mb-2">
+            <label asp-for="@Model.Address" class="form-label-add-edit">Address</label>
+            <input asp-for="@Model.Address" class="form-control" aria-required="false" placeholder="Enter Address" />
+            <span asp-validation-for="@Model.Address" class="text-danger"></span>
+        </div>
+        <div class="mb-2">
+            <label asp-for="@Model.AdditionalDetails" class="form-label-add-edit">Additional Details</label>
+            <textarea rows="5" asp-for="@Model.AdditionalDetails" class="form-control" aria-required="false" placeholder="Enter Additional Details"></textarea>
+            <span asp-validation-for="@Model.AdditionalDetails" class="text-danger"></span>
+        </div>
+    </div>
+</div>
+<div class="mb-2">
+	<input class="btn btn-success btn-dark-text w-100 py-2 fw-bold rounded" type="submit" value="Save" />
+</div>

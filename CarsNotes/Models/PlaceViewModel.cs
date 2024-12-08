@@ -8,8 +8,6 @@ namespace CarsNotes.Web.Models
     {
         [Key]
         public Guid Id { get; set; }
-        [Required]
-        [StringLength(100)]
         public string Name { get; set; } = null!;
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
@@ -23,6 +21,5 @@ namespace CarsNotes.Web.Models
         public DateTime CreatedOn { get; set; }
         public DateTime ModifiedOn { get; set; }
         public bool IsDeleted { get; set; }
-
     }
 }

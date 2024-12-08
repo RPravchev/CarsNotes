@@ -19,7 +19,7 @@ namespace CarsNotes.Controllers
     {
 
         [HttpGet]
-        public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate, Guid id, int page = 1)
+        public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate, Guid id)
         {
             DateTime sDate = DateTime.Now;
             DateTime eDate = DateTime.Now;
@@ -72,25 +72,11 @@ namespace CarsNotes.Controllers
                 .ToListAsync();
 
 
-            // --- Pagination start
-            int pageSize = 10;
-            int totalPages = data.Count();
-
-            var dataRows = data
-                .Skip((page - 1) * pageSize) // Skip items for previous pages
-                .Take(pageSize);              // Take only items for the current page
-            // --- Pagination end
-
-
-
-            var model = new PlaceFilterViewModel
+            var model = new PlaceInfoViewModel
             {
                 StartDate = sDate,
                 EndDate = eDate,
-                PlaceInfos = (IList<Place>)dataRows,
-                CurrentPage = page,
-                TotalPages = totalPages,
-                PageSize = pageSize                
+                PlaceInfos = data
             };
             TempData["StartDatePlace"] = model.StartDate;
             TempData["EndDatePlace"] = model.EndDate;
@@ -98,6 +84,33 @@ namespace CarsNotes.Controllers
 
             return View(model);
         }
+
+        // ------------------------------------------------------ Add
+        [HttpGet]
+        public async Task<IActionResult> Add(Guid id)
+        {
+            string currentUserId = GetCurrentUserId();
+
+            var car = await context.Cars
+                .Where(g => g.OwnerId == currentUserId)
+                .FirstOrDefaultAsync(g => g.Id == id);
+
+            if (car == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var model = new PlaceViewModel()
+            {
+                //Longitude = (decimal)23.343544,
+                //Latitude = (decimal)42.663532,
+                Date = DateTime.Now
+            };
+
+            return View(model);
+        }
+
+
 
 
         // ----------------------------------------------------------
