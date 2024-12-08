@@ -12,7 +12,7 @@
     @if (User?.Identity?.IsAuthenticated == true)
     {
         <div>
-            <a asp-controller="Place" asp-action="Details" asp-route-id="@TempData.Peek("CarId")" class="btn btn-warning"><i class="fas fa-plus"></i>Back</a>
+            <a asp-controller="Car" asp-action="Details" asp-route-id="@TempData.Peek("CarId")" class="btn btn-warning"><i class="fas fa-plus"></i>Back</a>
             <a asp-controller="Place" asp-action="Add" asp-route-id="@TempData.Peek("CarId")" class="btn btn-primary"><i class="fas fa-plus"></i>Add Place</a>
         </div>
     }
@@ -50,7 +50,8 @@
                     <tr>
                         <th style="padding-right:10px">Date Time </th>
                         <th style="padding-right:10px">Place Name</th>
-                        <th style="padding-right:10px">Geolocation </th>
+                        <th style="padding-right:10px">Latitude </th>
+                        <th style="padding-right:10px">Longitude </th>
                         <th style="padding-right:10px">Address</th>
                     </tr>
                 </thead>
@@ -63,9 +64,10 @@
                             <td><small class="text-muted" style="padding-right: 10px">@expense.Date.ToString("yyyy-MM-dd HH:mm")</small></td>
                             <td><small class="text-muted" style="padding-right: 10px;">@expense.Name</small></td>
                             <td><small class="text-muted" style="padding-right: 10px">@expense.Latitude</small></td>
-                            <td><small class="text-muted" style="padding-right: 10px; display: grid; justify-content: center">@expense.Address</small></td>
+                            <td><small class="text-muted" style="padding-right: 10px">@expense.Longitude</small></td>
+                            <td><small class="text-muted" style="padding-right: 10px; display: grid;">@expense.Address</small></td>
                             <td>
-                                <a asp-controller="Care" asp-action="Edit" asp-route-id="@expense.Id" class="btn btn-primary">Edit</a>
+                                <a asp-controller="Place" asp-action="Edit" asp-route-id="@expense.Id" class="btn btn-primary">Edit</a>
                             </td>
 
                         </tr>

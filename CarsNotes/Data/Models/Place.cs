@@ -11,7 +11,9 @@ namespace CarsNotes.Data.Models
         [Required]
         [StringLength(100)]
         public string Name { get; set; } = null!;
+        [Column(TypeName = "decimal(9,6)")]
         public decimal Latitude { get; set; }
+        [Column(TypeName = "decimal(9,6)")]
         public decimal Longitude { get; set; }
         public DateTime Date { get; set; }
         public string? Address { get; set; }
