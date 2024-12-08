@@ -15,7 +15,6 @@ namespace CarsNotes.Data
         {
         }
         public DbSet<Car> Cars { get; set; }
-        public DbSet<CarOwner> CarsOwner { get; set; }
         public DbSet<Fuel> Fuels { get; set; }
         public DbSet<Care> Cares { get; set; }
         public DbSet<CareType> CareTypes { get; set; }

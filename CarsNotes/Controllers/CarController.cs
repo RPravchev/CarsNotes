@@ -19,7 +19,6 @@ namespace CarsNotes.Controllers
 			var model = await context.Cars
                 .Where(g => g.IsDeleted == false)
                 .Where(g => g.OwnerId == currentUserId)
-                .Include(g => g.CarsOwner)
                 .Select(g => new CarInfoViewModel()
                 {
                     Id = g.Id,

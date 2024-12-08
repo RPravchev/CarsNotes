@@ -33,6 +33,5 @@ namespace CarsNotes.Models
         public string? AdditionalDetails { get; set; }
         public bool IsDeleted { get; set; }
         public string OwnerId { get; set; } = string.Empty;
-        public ICollection<CarOwner> CarsOwner { get; set; } = new HashSet<CarOwner>();
     }
 }
