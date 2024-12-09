@@ -8,10 +8,13 @@ namespace CarsNotes.Models
     public class CarViewModel
     {
         public Guid Id { get; set; }
+        [Required]
         public string ShortName { get; set; } = null!;
         public string? MainImageUrl { get; set; }
+        [Required]
         public string Brand { get; set; } = null!;
-        public string Model { get; set; } = null!;
+        [Required]
+        public string CarModel { get; set; } = null!;
         public string? RegistrationNumber { get; set; }
         public string? FuelType { get; set; }
         public string? BodyType { get; set; }

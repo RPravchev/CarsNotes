@@ -5,11 +5,13 @@ namespace CarsNotes.Models
     public class FuelViewModel
     {
         public Guid Id { get; set; }
-         public DateTime Date { get; set; }
-        public string GasStation { get; set; }
-        public string City { get; set; }
+        public DateTime Date { get; set; }
+        [Required]
+        public string GasStation { get; set; } = null!;
+        [Required]
+        public string City { get; set; } = null!;
         public double Volume { get; set; }
-        public string GasType { get; set; }
+        public string? GasType { get; set; }
         public decimal PricePerLiter { get; set; }
         public decimal PriceTotalFuel { get; set; }
         public int KilometrageActual { get; set; }

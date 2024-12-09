@@ -24,8 +24,8 @@ namespace CarsNotes.Controllers
                     Id = g.Id,
                     MainImageUrl = g.MainImageUrl,
                     ShortName = g.ShortName,
-                    Brand = g.Brand,
-                    Model = g.Model,
+                    Brand = g.Brand ?? string.Empty,
+                    CarModel = g.CarModel ?? string.Empty,
                     Year = g.YearProduction
                 })
                 .AsNoTracking()
@@ -39,7 +39,7 @@ namespace CarsNotes.Controllers
         public async Task<IActionResult> Add()
         {
             var model = new CarViewModel();
-            //mod.OwnerId = GetCurrentUserId();
+
             return View(model);
         }
 
@@ -47,9 +47,9 @@ namespace CarsNotes.Controllers
         public async Task<IActionResult> Add(CarViewModel model)
         {
             model.OwnerId = GetCurrentUserId();
+
             if (ModelState.IsValid == false)
             {
-                //mod.OwnerId = GetCurrentUserId();
                 return View(model);
             }
 
@@ -58,7 +58,7 @@ namespace CarsNotes.Controllers
                 ShortName = model.ShortName,
                 MainImageUrl = model.MainImageUrl,
                 Brand = model.Brand,
-                Model = model.Model,
+                CarModel = model.CarModel,
                 RegistrationNumber = model.RegistrationNumber,
                 FuelType = model.FuelType,
                 BodyType = model.BodyType,
@@ -79,8 +79,11 @@ namespace CarsNotes.Controllers
                 KilometrageActual = model.KilometrageActual,
                 AdditionalDetails = model.AdditionalDetails,
                 IsDeleted = model.IsDeleted,
-                OwnerId = model.OwnerId
+                OwnerId = model.OwnerId,
+                CreatedOn = DateTime.Now,
+                ModifiedOn = DateTime.Now
             };
+
             await context.Cars.AddAsync(car);
             await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -94,10 +97,11 @@ namespace CarsNotes.Controllers
             string currentUserId = GetCurrentUserId();
 
 			var car = await context.Cars
+                .Where(g => g.OwnerId == currentUserId)
                 .FirstOrDefaultAsync(p => p.Id == id);          
 
 
-            if (car == null || car.OwnerId != currentUserId)
+            if (car == null)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -111,7 +115,7 @@ namespace CarsNotes.Controllers
                 ShortName = car.ShortName,
                 MainImageUrl = car.MainImageUrl,
                 Brand = car.Brand,
-                Model = car.Model,
+                CarModel = car.CarModel,
                 RegistrationNumber = car.RegistrationNumber,
                 FuelType = car.FuelType,
                 BodyType = car.BodyType,
@@ -136,7 +140,6 @@ namespace CarsNotes.Controllers
             };
 
             TempData["OwnerId"] = model.OwnerId;
-            //TempData["CarId"] = model.Id;
 
             return View(model);
         }
@@ -157,8 +160,8 @@ namespace CarsNotes.Controllers
                     Id = id,
                     ShortName = c.ShortName,
                     MainImageUrl = c.MainImageUrl,
-                    Brand = c.Brand,
-                    Model = c.Model,
+                    Brand = c.Brand ?? string.Empty,
+                    CarModel = c.CarModel ?? string.Empty,
                     RegistrationNumber = c.RegistrationNumber,
                     FuelType = c.FuelType,
                     BodyType = c.BodyType,
@@ -178,47 +181,8 @@ namespace CarsNotes.Controllers
                     KilometrageAcquisition = c.KilometrageAcquisition,
                     KilometrageActual = c.KilometrageActual,
                     AdditionalDetails = c.AdditionalDetails,
-                    //IsDeleted = c.IsDeleted,
-                    //OwnerId = GetCurrentUserId()
                 })
                 .FirstOrDefaultAsync();
-            /*
-            if (car == null || car.OwnerId != currentUserId)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            
-            var model = new CarViewModel()
-            {
-                Id = id,
-                ShortName = car.ShortName,
-                MainImageUrl = car.MainImageUrl,
-                Brand = car.Brand,
-                Model = car.Model,
-                RegistrationNumber = car.RegistrationNumber,
-                FuelType = car.FuelType,
-                BodyType = car.BodyType,
-                TransmissionType = car.TransmissionType,
-                DoorsNumber = car.DoorsNumber,
-                Color = car.Color,
-                HorsePower = car.HorsePower,
-                CubicCapacity = car.CubicCapacity,
-                ChassisNumber = car.ChassisNumber,
-                EngineNumber = car.EngineNumber,
-                TransmissionNumber = car.TransmissionNumber,
-                YearProduction = car.YearProduction,
-                YearAcquisition = car.YearAcquisition,
-                OriginalColorCode = car.OriginalColorCode,
-                VINCode = car.VINCode,
-                CountryProduction = car.CountryProduction,
-                KilometrageAcquisition = car.KilometrageAcquisition,
-                KilometrageActual = car.KilometrageActual,
-                IsDeleted = car.IsDeleted,
-                OwnerId = GetCurrentUserId()
-            };
-            */
-            //TempData["OwnerId"] = model.OwnerId;
-            //TempData["CarId"] = model.Id;
 
             return View(viewModel);
         }
@@ -237,18 +201,15 @@ namespace CarsNotes.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-
             if (ModelState.IsValid == false)
             {
-                //mod.OwnerId = GetCurrentUserId();
                 return View(vModel);
             }
-
 
             car.ShortName = vModel.ShortName;
             car.MainImageUrl = vModel.MainImageUrl;
             car.Brand = vModel.Brand;
-            car.Model = vModel.Model;
+            car.CarModel = vModel.CarModel;
             car.RegistrationNumber = vModel.RegistrationNumber;
             car.FuelType = vModel.FuelType;
             car.BodyType = vModel.BodyType;
@@ -268,8 +229,7 @@ namespace CarsNotes.Controllers
             car.KilometrageAcquisition = vModel.KilometrageAcquisition;
             car.KilometrageActual = vModel.KilometrageActual;
             car.AdditionalDetails = vModel.AdditionalDetails;
-            //car.IsDeleted = vModel.IsDeleted;
-            //car.OwnerId = vModel.OwnerId;
+            car.ModifiedOn = DateTime.Now;
 
 
             await context.SaveChangesAsync();
@@ -290,6 +250,7 @@ namespace CarsNotes.Controllers
             }
 
             car.IsDeleted = true;
+            car.ModifiedOn = DateTime.Now;
 
             await context.SaveChangesAsync();
             return RedirectToAction("Index");

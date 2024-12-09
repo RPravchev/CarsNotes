@@ -10,8 +10,10 @@ namespace CarsNotes.Data.Models
         public Guid Id { get; set; }
         public string ShortName { get; set; } = null!;
         public string? MainImageUrl { get; set; }
-        public string Brand  { get; set; } = string.Empty;
-        public string Model { get; set; } = string.Empty;
+        [Required]
+        public string Brand { get; set; } = null!;
+        [Required]
+        public string CarModel { get; set; }= null!;
         public string? RegistrationNumber { get; set; }
         public string? FuelType { get; set; }
         public string? BodyType { get; set; }
