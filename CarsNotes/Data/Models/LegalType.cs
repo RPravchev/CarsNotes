@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static CarsNotes.Common.Constants.LegalConstants;
 
 namespace CarsNotes.Data.Models
 {
@@ -10,7 +11,8 @@ namespace CarsNotes.Data.Models
         [Comment("The identifier of each legal type")]
         public int Id { get; set; }
         [Required]
-        [MaxLength(100)]
+        [MaxLength(LegalTypeNameMax)]
+        [Comment("The name of the legal type")]
         public string Name { get; set; } = null!;
         public ICollection<Legal> Legals { get; set; } = new HashSet<Legal>();
         [Comment("Soft Delete")]

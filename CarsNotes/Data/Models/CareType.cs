@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static CarsNotes.Common.Constants.CareConstants;
 
 namespace CarsNotes.Data.Models
 {
@@ -10,7 +11,8 @@ namespace CarsNotes.Data.Models
         [Comment("The identifier of each care type")]
         public int Id { get; set; }
         [Required]
-        [MaxLength(100)]
+        [MaxLength(CareTypeNameMax)]
+        [Comment("The name of the care type")]
         public string Name { get; set; } = null!;
         public ICollection<Care> Cares { get; set; } = new HashSet<Care>();
         [Comment("Soft Delete")]

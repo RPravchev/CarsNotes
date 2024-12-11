@@ -1,6 +1,7 @@
 ﻿using CarsNotes.Data;
 using CarsNotes.Data.Models;
 using CarsNotes.Models;
+using CarsNotes.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ namespace CarsNotes.Controllers
     {
         public async Task<IActionResult> Index()
         {
+            
             string currentUserId = GetCurrentUserId();            
 
 			var model = await context.Cars
@@ -30,10 +32,13 @@ namespace CarsNotes.Controllers
                 })
                 .AsNoTracking()
                 .ToListAsync();
+            
+            //var model = await carService.GetCarShortInfosAsync();
 
 			return View(model);
 
         }
+
         // ------------------------------------------------------ Add
         [HttpGet]
         public async Task<IActionResult> Add()
@@ -70,8 +75,8 @@ namespace CarsNotes.Controllers
                 ChassisNumber = model.ChassisNumber,
                 EngineNumber = model.EngineNumber,
                 TransmissionNumber = model.TransmissionNumber,
-                YearProduction = model.YearProduction,
-                YearAcquisition = model.YearAcquisition,
+                YearProduction = model.YearProduction ?? 0,
+                YearAcquisition = model.YearAcquisition ?? 0,
                 OriginalColorCode = model.OriginalColorCode,
                 VINCode = model.VINCode,
                 CountryProduction = model.CountryProduction,
@@ -221,8 +226,8 @@ namespace CarsNotes.Controllers
             car.ChassisNumber = vModel.ChassisNumber;
             car.EngineNumber = vModel.EngineNumber;
             car.TransmissionNumber = vModel.TransmissionNumber;
-            car.YearProduction = vModel.YearProduction;
-            car.YearAcquisition = vModel.YearAcquisition;
+            car.YearProduction = vModel.YearProduction ?? 0;
+            car.YearAcquisition = vModel.YearAcquisition ?? 0;
             car.OriginalColorCode = vModel.OriginalColorCode;
             car.VINCode = vModel.VINCode;
             car.CountryProduction = vModel.CountryProduction;

@@ -201,7 +201,7 @@ namespace CarsNotes.Controllers
                 PricePerLiter = model.PricePerLiter,
                 PriceTotalFuel = model.PriceTotalFuel,
                 KilometrageActual = model.KilometrageActual,
-                ExpencesTotalFuel = model.ExpencesTotalFuel,
+                //ExpencesTotalFuel = model.ExpencesTotalFuel,
                 CreatedOn = DateTime.Now,
                 OwnerId = currentUserId,
                 //CarId = (Guid)TempData["CarId"]
@@ -276,7 +276,7 @@ namespace CarsNotes.Controllers
             fuel.PricePerLiter = model.PricePerLiter;
             fuel.PriceTotalFuel = model.PriceTotalFuel;
             fuel.KilometrageActual = model.KilometrageActual;
-            fuel.ExpencesTotalFuel = model.ExpencesTotalFuel;
+            //fuel.ExpencesTotalFuel = model.ExpencesTotalFuel;
             fuel.Description = model.Description;
             fuel.FullTank = model.FullTank;
 

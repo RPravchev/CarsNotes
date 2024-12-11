@@ -68,5 +68,8 @@ header {
     background-color: #a4aebd; /* Green background for active page */
     color: #ffffff; /* White text */
 }
-
-/* -------- custom section ----------- end */
+.img:hover {
+    opacity: 50;
+    height: 110%;
+}
+    /* -------- custom section ----------- end */

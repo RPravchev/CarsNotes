@@ -15,6 +15,11 @@ namespace CarsNotes.Controllers
 
         public IActionResult Index()
         {
+            if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                return RedirectToAction("Index", "Care");
+            }
+
             return View();
         }
 
