@@ -1,0 +1,77 @@
+﻿using CarsNotes.Data;
+using CarsNotes.Web.Areas.Admin.Models;
+using CarsNotes.Web.Areas.Identity.Data;
+//using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+//using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+//using CarsNotes.Data;
+
+namespace CarsNotes.Web.Areas.Admin.Controllers
+//namespace CarsNotes.Web.Areas.Admin
+{
+	//public class UsersController(UserManager<CarUser> userManager) : Controller
+	public class AdminController(UserManager<CarUser> userManager, ApplicationDbContext context) : Controller
+	{
+		//[Route("Admin/ListUsers")]
+		[HttpGet]
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> ListUsers()
+        {
+            
+			//var model = await userManager.Users
+			var users = await userManager.Users
+				.ToListAsync();
+
+            var model = new List<UsersViewModel>();
+            foreach (var user in users)
+            {
+                var roles = await userManager.GetRolesAsync(user);
+                model.Add(new UsersViewModel
+				{
+					Role = string.Join(",", roles),
+					Id = user.Id,
+					UserName = user.UserName ?? string.Empty,
+					FirstName = user.FirstName,
+					LastName = user.LastName,
+					Email = user.Email ?? string.Empty,
+					Phone = user.PhoneNumber ?? string.Empty,
+					IsDeleted = user.IsDeleted
+				});
+            }
+
+
+			return View(model);
+        }
+        [HttpGet]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if(user == null)
+            {
+                return View("Error");
+            }
+            user.IsDeleted = true;
+            await context.SaveChangesAsync();
+
+            return RedirectToAction("ListUsers");
+        }
+
+		[HttpGet]
+		public async Task<IActionResult> ActivateUser(string id)
+		{
+			var user = await context.Users.FirstOrDefaultAsync(u => u.Id == id);
+			if (user == null)
+			{
+				return View("Error");
+			}
+			user.IsDeleted = false;
+			await context.SaveChangesAsync();
+
+			return RedirectToAction("ListUsers");
+		}
+
+	}
+}

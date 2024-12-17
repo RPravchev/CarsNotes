@@ -1,0 +1,67 @@
+﻿@using CarsNotes.Web.Models
+@model LegalViewModel
+
+
+<div class="col-sm-6 mb-2" style="padding-right: 10px;">
+    <label asp-for="@Model.Date" class="form-label-add-edit">Date</label>
+    <input asp-for="@Model.Date" class="form-control" aria-required="true" type="datetime-local" value="@Model.Date.ToString("yyyy-MM-ddTHH:mm")" />
+    <span asp-validation-for="@Model.Date" class="text-danger"></span>
+</div>
+<div class="mb-2 d-flex align-items-center">
+    <div class="col-sm-6" style="padding-right: 10px;">
+        <label asp-for="@Model.LegalTypeId" class="form-label-add-edit">Type of Legal *</label>
+        <select asp-for="@Model.LegalTypeId" class="form-control" aria-required="true" asp-items="@(new SelectList(Model.LegalInfos, "Id", "Name"))">
+            <option value="">Select Type...</option>
+        </select>
+        <span asp-validation-for="@Model.LegalTypeId" class="text-danger"></span>
+    </div>
+    <div class="col-sm-6">
+        <label asp-for="@Model.TypeDetails" class="form-label-add-edit">Type Details</label>
+        <input asp-for="@Model.TypeDetails" class="form-control" aria-required="false" placeholder="Enter Type Details" />
+        <span asp-validation-for="@Model.TypeDetails" class="text-danger"></span>
+    </div>
+</div>
+<div class="mb-2 d-flex align-items-center">
+    <div class="col-sm-6" style="padding-right: 10px;">
+            <label asp-for="@Model.Issuer" class="form-label-add-edit">Buyed From</label>
+            <input asp-for="@Model.Issuer" class="form-control" aria-required="false" placeholder="Enter Buyed From" />
+            <span asp-validation-for="@Model.Issuer" class="text-danger"></span>
+    </div>
+    <div class="col-sm-6">
+        <label asp-for="@Model.Insurer" class="form-label-add-edit">Insurer</label>
+        <input asp-for="@Model.Insurer" class="form-control" aria-required="false" placeholder="Enter Insurer" />
+        <span asp-validation-for="@Model.Insurer" class="text-danger"></span>
+    </div>
+</div>
+<div class="mb-2 d-flex align-items-center">
+    <div class="col-sm-6" style="padding-right: 10px;">
+        <label asp-for="@Model.ValidFrom" class="form-label-add-edit">Valid From</label>
+        <input asp-for="@Model.ValidFrom" class="form-control" aria-required="false" type="datetime-local" placeholder="Enter Valid From" />
+        <span asp-validation-for="@Model.ValidFrom" class="text-danger"></span>
+    </div>
+    <div class="col-sm-6" >
+        <label asp-for="@Model.ValidTo" class="form-label-add-edit">Valid To</label>
+        <input asp-for="@Model.ValidTo" class="form-control" aria-required="false" type="datetime-local" placeholder="Enter Valid To" />
+        <span asp-validation-for="@Model.ValidTo" class="text-danger"></span>
+    </div>
+</div>
+<div class="mb-2 d-flex align-items-center">
+    <div class="col-sm-6" style="padding-right: 10px; margin-right: 10px;">
+        <label asp-for="@Model.Price" class="form-label-add-edit">Price</label>
+        <input asp-for="@Model.Price" class="form-control" aria-required="false" placeholder="Enter Price" />
+        <span asp-validation-for="@Model.Price" class="text-danger"></span>
+    </div>
+    <div class="text-center">
+        <label asp-for="@Model.IsPayed" class="form-label-add-edit d-block">Is Payed</label>
+        <input type="checkbox" asp-for="@Model.IsPayed" class="form-check-input" aria-required="false" />
+        <span asp-validation-for="@Model.IsPayed" class="text-danger"></span>
+    </div>
+</div>
+<div class="mb-2">
+    <label asp-for="@Model.Description" class="form-label-add-edit">Description</label>
+    <textarea rows="5" asp-for="@Model.Description" class="form-control" aria-required="false" placeholder="Enter Description"></textarea>
+    <span asp-validation-for="@Model.Description" class="text-danger"></span>
+</div>
+<div class="mb-2">
+    <input class="btn btn-success btn-dark-text w-100 py-2 fw-bold rounded" type="submit" value="Save" />
+</div>

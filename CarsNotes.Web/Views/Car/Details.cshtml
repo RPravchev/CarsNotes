@@ -1,0 +1,121 @@
+﻿@using CarsNotes.Web.Models
+@model CarViewModel
+@{
+    ViewData["Title"] = @Model.ShortName;
+    var today = DateTime.Now.ToString("dd-MM-yyyy");
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3" style="margin-top: 20px;">
+    <h2>@ViewData["Title"]</h2>
+</div>
+<hr />
+
+<div class="row justify-content-center" style="margin: 0 auto; max-width: 1000px;">
+    <div class="col-md-5 text-center">
+        @if (!string.IsNullOrEmpty(Model.MainImageUrl))
+        {
+            <img src="@Model.MainImageUrl" class="img-fluid" style="max-width: 100%; height: auto; background-color: #fdf3e6; border-color: #fdf3e6;" alt="@Model.ShortName" />
+        }
+        else
+        {
+            <img src="~/CarsNotesLogo.png" class="img-fluid" style="max-width: 100%; height: auto;" alt="No Image Available" />
+        }
+        <p></p>
+        <div class="col-md-12 mb-4">
+            <div class="card-group d-flex">
+
+                <div class="card h-100 p-1" style="width: auto; background-color: #fdf3e6; border-color: #fdf3e6;">
+                    <img src="/Fuel.png" class="card-img-top" style="max-height: 200px; object-fit: contain;" alt="Fuel">
+                    <a asp-controller="Fuel" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary"><i class="fas fa-plus"></i>Fuel</a>
+                </div>
+                <div class="card h-100 p-1" style="width: auto; background-color: #fdf3e6; border-color: #fdf3e6;">
+                    <img src="/Care.png" class="card-img-top" style="max-height: 200px; object-fit: contain;" alt="Care">
+                    <a asp-controller="Care" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary"><i class="fas fa-plus"></i>Care</a>
+                </div>
+                <div class="card h-100 p-1" style="width: auto; background-color: #fdf3e6; border-color: #fdf3e6;">
+                    <img src="\Legal.png" class="card-img-top" style="max-height: 200px; object-fit: contain;" alt="Legal">
+                    <a asp-controller="Legal" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary"><i class="fas fa-plus"></i>Legal</a>
+                </div>
+                <div class="card h-100 p-1" style="width: auto; background-color: #fdf3e6; border-color: #fdf3e6;">
+                    <img src="\Legal.png" class="card-img-top" style="max-height: 200px; object-fit: contain;" alt="Place">
+                    <a asp-controller="Place" asp-action="Index" asp-route-id="@Model.Id" class="btn btn-primary"><i class="fas fa-plus"></i>Place</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7" text-left>
+        <table>
+            <tr>
+                <th style="padding-bottom: 12px"><small class="text-muted">Brand: </small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left: 10px">@Model.Brand</p></th>
+                <th style="padding-bottom: 12px; padding-left: 6px"><small class="text-muted">Model: </small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left: 10px">@Model.CarModel</p></th>
+            </tr>
+            <tr>
+                <th style="padding-bottom: 12px"><small class="text-muted">Registration Number: </small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left: 10px">@Model.RegistrationNumber </p></th>
+                <th style="padding-bottom: 12px; padding-left: 6px"><small class="text-muted">Fuel Type:  </small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left: 10px">@Model.FuelType</small></p></th>
+            </tr>
+            <tr>
+                <th style="padding-bottom: 12px"><small class="text-muted">Horse Power: </small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left: 10px">@Model.HorsePower </p></th>
+                <th style="padding-bottom: 12px; padding-left: 6px"><small class="text-muted">Cubic Capacity:  </small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left: 10px">@Model.CubicCapacity</p></th>
+            </tr>
+            <tr>
+                <th style="padding-bottom: 12px"><small class="text-muted"><b>Body Type:  </small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left: 10px">@Model.BodyType </p></th>
+                <th style="padding-bottom: 12px; padding-left: 6px"><small class="text-muted">Country Production:  </small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left: 10px">@Model.CountryProduction</p></th>
+            </tr>
+            <tr>
+                <th style="padding-bottom: 12px"><small class="text-muted">Kilometrage: </small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left: 10px">@Model.KilometrageActual.ToString("# ###")</p></th>
+                <th style="padding-bottom: 12px; padding-left: 6px"><small class="text-muted">Kilometrage initial: </small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left: 10px">@Model.KilometrageAcquisition.ToString("# ###")</p></th>
+            </tr>
+            <tr>
+                <th style="padding-bottom: 12px"><small class="text-muted">Year of Production:  </small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left: 10px">@Model.YearProduction </p></th>
+                <th style="padding-bottom: 12px; padding-left: 6px"><small class="text-muted">Year of Acquisition:   </small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left: 10px">@Model.YearAcquisition </p></th>
+            </tr>
+            <tr>
+                <th style="padding-bottom: 12px"><small class="text-muted">Color:  </small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left: 10px">@Model.Color </p></th>
+                <th style="padding-bottom: 12px; padding-left: 6px"><small class="text-muted">Color Code: </small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left: 10px">@Model.OriginalColorCode</p></th>
+            </tr>
+            <tr>
+                <th style ="padding-bottom: 12px"><small class="text-muted">Transmission Type: </small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left: 10px">@Model.TransmissionType </p></th>
+                <th style="padding-bottom: 12px; padding-left: 6px"><small class="text-muted">Transmission Code:   </small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left: 10px">@Model.TransmissionNumber</p></th>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th style="padding-bottom: 12px"><p class="card-text"><small class="text-muted"><b>VIN Code:</b></small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left:60px;">@Model.VINCode </p></th>
+            </tr>
+            <tr>
+                <th style="padding-bottom: 12px"><p class="card-text"><small class="text-muted"><b>Chassis Code:</b></small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left:60px;">@Model.ChassisNumber</p></th>
+            </tr>
+            <tr>
+                <th style="padding-bottom: 12px"><p class="card-text"><small class="text-muted"><b>Engine Code:</b></small></th>
+                <th style="padding-bottom: 12px"><p class="card-text" style="font-weight: lighter; margin-left:60px;">@Model.EngineNumber</p></th>
+            </tr>
+        </table>
+        <p class="card-text"><small class="text-muted"><b style="padding-right: 6px">Additional Details: </b><a>@Model.AdditionalDetails</a></small></p>
+    </div>
+        <div class="card-footer text-center">
+            <div class="d-flex justify-content-between align-items-center">
+                <a asp-controller="Car" asp-action="Index" class="btn btn-warning d-flex justify-content-center align-items-center flex-fill mx-1">Back</a>
+                <a asp-controller="Car" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary d-flex justify-content-center align-items-center flex-fill mx-1">Edit</a>
+                <a asp-controller="Car" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger d-flex justify-content-center align-items-center flex-fill mx-1" onclick="return confirm('Are you sure you want to delete this product?');">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
