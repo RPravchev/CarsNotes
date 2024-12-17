@@ -14,7 +14,6 @@ namespace CarsNotes.Web.Controllers
     {
         public async Task<IActionResult> Index(DateTime? startDate, DateTime? endDate, Guid id)
         {
-            // ----------------------------------------- Date logic --- start
 
             DateTime sDate = DateTime.Now;
             DateTime eDate = DateTime.Now;
@@ -56,29 +55,24 @@ namespace CarsNotes.Web.Controllers
                 TempData["EndDateCare"] = eDate;
             }
 
-            // ----------------------------------------- Date logic --- end
-
 
             string currentUserId = GetCurrentUserId();
-            //TempData["CarId"] = id;
 
-            var car = await repo.Cars.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(c => c.Id == id);
+            Car? car = await repo.Cars.Query()
+                .FirstOrDefaultAsync(c => c.OwnerId == currentUserId && c.Id == id);
 
             if (car == null)
             {
                 return RedirectToAction("Details", "Car");
             }
 
-            var query = repo.Cares.Query()
-                .Where(e => e.CarId == id)
-                .Where(e => e.Date >= sDate)
-                .Where(e => e.Date <= eDate)
-                .Where(e => e.IsDeleted == false)
-                .AsQueryable();
+            IQueryable<Care> query = repo.Cares.Query()
+                .Where(e => e.CarId == id
+                         && e.Date >= sDate
+                         && e.Date <= eDate
+                         && !e.IsDeleted);
 
-            var data = await query
+            List<CareViewModel> data = await query
                 .OrderByDescending(e => e.Date)
                 .Include(e => e.CareType)
                 .Select(e => new CareViewModel()
@@ -90,15 +84,8 @@ namespace CarsNotes.Web.Controllers
                     Date = e.Date,
                     TypeDetails = e.TypeDetails,
                     Manifacturer = e.Manifacturer,
-                    //AdditionalInfo = e.AdditionalInfo,
                     BuyedFrom = e.BuyedFrom,
-                    //Quantity = e.Quantity,
-                    //PriceMaterial = e.PriceMaterial,
-                    //PriceWork = e.PriceWork,
-                    //IsDeleted = e.IsDeleted,
                     IsPendingCare = e.IsPendingCare,
-                    //CarId = id
-
                 })
                 .AsNoTracking()
                 .ToListAsync();
@@ -118,45 +105,40 @@ namespace CarsNotes.Web.Controllers
                 CareInfos = (IList<CareViewModel>)data,
                 TotalExpensesForPeriod = totalExp,
             };
-            //TempData["StartDateCare"] = model.StartDate;
-            //TempData["EndDateCare"] = model.EndDate;
 
             return View(model);
         }
 
-        // ------------------------------------------------------ Add
         [HttpGet]
         public async Task<IActionResult> Add(Guid id)
         {
             string currentUserId = GetCurrentUserId();
 
-            var car = await repo.Cars.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(g => g.Id == id);
+            Car? car = await repo.Cars.Query()
+                .FirstOrDefaultAsync(c => c.OwnerId == currentUserId && c.Id == id);
 
             if (car == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            var model = new CareViewModel()
+            CareViewModel model = new CareViewModel()
             {
                 CareInfos = await GetCareTypes(),
                 Date = DateTime.Now
             };
-            //TempData["CarId"] = id;
 
             return View(model);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(CareViewModel model)
         {
             string currentUserId = GetCurrentUserId();
 
-            var car = await repo.Cars.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(g => g.Id == model.Id);
+            Car? car = await repo.Cars.Query()
+                .FirstOrDefaultAsync(c => c.OwnerId == currentUserId && c.Id == model.Id);
 
             if (car == null)
             {
@@ -172,10 +154,7 @@ namespace CarsNotes.Web.Controllers
 
             Care care = new Care()
             {
-                //Id = model.Id,
                 Date = model.Date,
-
-                //CareTypeId = Convert.ToInt32(model.CareType),
                 CareTypeId = Convert.ToInt32(model.CareTypeId),
                 TypeDetails = model.TypeDetails ?? string.Empty,
                 Manifacturer = model.Manifacturer ?? string.Empty,
@@ -190,7 +169,6 @@ namespace CarsNotes.Web.Controllers
                 ModifiedOn = DateTime.Now,
                 IsDeleted = false,
                 OwnerId = currentUserId,
-                //CarId = (Guid)TempData["CarId"]
                 CarId = model.Id
             };
             await repo.Cares.AddAsync(care);
@@ -198,15 +176,13 @@ namespace CarsNotes.Web.Controllers
             return RedirectToAction("Index", "Care", new { id = model.Id, startDate = TempData["StartDateCare"], endDate = TempData["EndDateCare"] });
         }
 
-        // ------------------------------------------------------ Edit
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
             string currentUserId = GetCurrentUserId();
 
             var care = await repo.Cares.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(g => g.Id == id);
+                .FirstOrDefaultAsync(c => c.OwnerId == currentUserId && c.Id == id);
 
             if (care == null)
             {
@@ -228,21 +204,18 @@ namespace CarsNotes.Web.Controllers
                 PriceWork = care.PriceWork,
                 PriceTotal = care.PriceTotal,
                 IsPendingCare = care.IsPendingCare,
-
-                //CarId = (Guid)TempData["CarId"]
-                //CarId = care.Id
             };
             return View(model);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CareViewModel model)
         {
             string currentUserId = GetCurrentUserId();
 
-            var care = await repo.Cares.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(g => g.Id == model.Id);
+            Care? care = await repo.Cares.Query()
+                .FirstOrDefaultAsync(c => c.OwnerId == currentUserId && c.Id == model.Id);
 
             if (care == null)
             {
@@ -271,14 +244,13 @@ namespace CarsNotes.Web.Controllers
             await repo.CompleteAsync();
             return RedirectToAction("Index", "Care", new { id = TempData.Peek("CarId"), startDate = TempData.Peek("StartDateCare"), endDate = TempData.Peek("EndDateCare") });
         }
-        // ---------------------------------------------------------- Delete
+
         public async Task<IActionResult> Delete(Guid id)
         {
             string currentUserId = GetCurrentUserId();
 
-            var care = await repo.Cares.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(g => g.Id == id);
+            Care? care = await repo.Cares.Query()
+                .FirstOrDefaultAsync(c => c.OwnerId == currentUserId && c.Id == id);
 
             if (care == null)
             {
@@ -287,12 +259,10 @@ namespace CarsNotes.Web.Controllers
 
             care.IsDeleted = true;
 
-            //await context.SaveChangesAsync();
             await repo.CompleteAsync();
             return RedirectToAction("Index", "Care", new { id = care.CarId });
         }
 
-        // ----------------------------------------------------------
         private string GetCurrentUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);

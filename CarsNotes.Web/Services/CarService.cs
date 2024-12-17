@@ -1,18 +1,18 @@
-﻿using CarsNotes.Data;
-using CarsNotes.Data.Models;
+﻿using CarsNotes.Data.Models;
 using CarsNotes.Web.Models;
-using CarsNotes.Web.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using CarsNotes.Web.Abstractions;
 
 
-namespace CarsNotes.Services
+namespace CarsNotes.Web.Services
 {
-    public class CarService(ApplicationDbContext context) : ICarService
+    public class CarService(IUnitOfWork repo) : ICarsService
     {
 
         public async Task<List<CarInfoViewModel>> GetCarShortInfosAsync(string userId)
         {
-            return await context.Cars
+            return await repo.Cars.Query()
+                .AsNoTracking()
                 .Where(g => !g.IsDeleted && g.OwnerId == userId)
                 .Select(g => new CarInfoViewModel
                 {
@@ -22,16 +22,14 @@ namespace CarsNotes.Services
                     Brand = g.Brand ?? string.Empty,
                     CarModel = g.CarModel ?? string.Empty,
                     Year = g.YearProduction
-                })
-                .AsNoTracking()
+                })                
                 .ToListAsync();
         }
 
         public async Task<CarViewModel> GetCarDetailsAsync(Guid id, string userId)
         {
-            var car = await context.Cars
-                .Where(g => g.OwnerId == userId)
-                .FirstOrDefaultAsync(p => p.Id == id);
+            var car = await repo.Cars.Query()
+                .FirstOrDefaultAsync(c => c.OwnerId == userId && c.Id == id);
 
             if (car == null) return null;
 
@@ -68,9 +66,9 @@ namespace CarsNotes.Services
 
         public async Task<CarViewModel> GetCarForEditAsync(Guid id, string userId)
         {
-            var model = await context.Cars
-                .Where(c => c.Id == id && c.OwnerId == userId && !c.IsDeleted)
+            var model = await repo.Cars.Query()
                 .AsNoTracking()
+                .Where(c => c.Id == id && c.OwnerId == userId && !c.IsDeleted)                
                 .Select(c => new CarViewModel
                 {
                     Id = id,
@@ -135,16 +133,14 @@ namespace CarsNotes.Services
                 CreatedOn = DateTime.Now,
                 ModifiedOn = DateTime.Now
             };
-
-            await context.Cars.AddAsync(car);
-            await context.SaveChangesAsync();
+            await repo.Cars.AddAsync(car);
+            await repo.CompleteAsync();
         }
 
         public async Task EditCarAsync(CarViewModel model, string userId)
         {
-            var car = await context.Cars
-                .Where(g => g.OwnerId == userId)
-                .FirstOrDefaultAsync(g => g.Id == model.Id);
+            var car = await repo.Cars.Query()
+                .FirstOrDefaultAsync(c => c.OwnerId == userId && c.Id == model.Id);
 
             if (car == null) throw new Exception("Car not found.");
 
@@ -173,22 +169,19 @@ namespace CarsNotes.Services
             car.AdditionalDetails = model.AdditionalDetails;
             car.ModifiedOn = DateTime.Now;
 
-            await context.SaveChangesAsync();
+            await repo.CompleteAsync();
         }
-
         public async Task DeleteCarAsync(Guid id, string userId)
         {
-            var car = await context.Cars
-                .Where(g => g.OwnerId == userId)
-                .FirstOrDefaultAsync(g => g.Id == id);
+            var car = await repo.Cars.Query()
+                .FirstOrDefaultAsync(c => c.OwnerId == userId && c.Id == id);
 
             if (car == null) throw new Exception("Car not found.");
 
             car.IsDeleted = true;
             car.ModifiedOn = DateTime.Now;
 
-            await context.SaveChangesAsync();
+            await repo.CompleteAsync();
         }
-
     }
 }

@@ -10,8 +10,6 @@ namespace CarsNotes.Web.Models
         public Guid Id { get; set; }
         [Required]
         public DateTime Date { get; set; }
-        //[Required]
-        //public string Type { get; set; }
         public string? TypeDetails { get; set; }
         public DateTime? ValidFrom { get; set; }
         public DateTime? ValidTo { get; set; }

@@ -22,7 +22,6 @@ namespace CarsNotes.Web.Models
         public Guid CarId { get; set; }
         [Required]
         public int CareTypeId { get; set; }
-        //[Required]
         public string? CareType { get; set; }
         public decimal TotalExpensesForPeriod { get; set; }
         public DateTime CreatedOn { get; set; }

@@ -3,7 +3,6 @@ using CarsNotes.Data;
 using CarsNotes.Web.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-//using Microsoft.AspNet.Identity;
 
 namespace CarsNotes.Web.Seed
 {
@@ -270,7 +269,6 @@ namespace CarsNotes.Web.Seed
                 );
                 await context.SaveChangesAsync();
             }
-
         }
     }
 }

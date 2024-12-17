@@ -1,18 +1,17 @@
 ﻿using CarsNotes.Web.Models;
-//using CarsNotes.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using CarsNotes.Web.Services.Interfaces;
+using CarsNotes.Web.Abstractions;
 
 namespace CarsNotes.Web.Controllers
 {
     [Authorize]
     public class CarController : Controller
     {
-        private readonly ICarService _carService;
+        private readonly ICarsService _carService;
 
-        public CarController(ICarService carService)
+        public CarController(ICarsService carService)
         {
             _carService = carService;
         }
@@ -24,7 +23,6 @@ namespace CarsNotes.Web.Controllers
             return View(model);
         }
 
-        // Add (GET)
         [HttpGet]
         public IActionResult Add()
         {
@@ -32,7 +30,6 @@ namespace CarsNotes.Web.Controllers
             return View(model);
         }
 
-        // Add (POST)
         [HttpPost]
         public async Task<IActionResult> Add(CarViewModel model)
         {
@@ -47,7 +44,6 @@ namespace CarsNotes.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // Details (GET)
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
@@ -66,7 +62,6 @@ namespace CarsNotes.Web.Controllers
             return View(model);
         }
 
-        // Edit (GET)
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -81,7 +76,6 @@ namespace CarsNotes.Web.Controllers
             return View(viewModel);
         }
 
-        // Edit (POST)
         [HttpPost]
         public async Task<IActionResult> Edit(CarViewModel vModel)
         {
@@ -96,7 +90,6 @@ namespace CarsNotes.Web.Controllers
             return RedirectToAction("Details", "Car", new { id = vModel.Id });
         }
 
-        // Delete
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {

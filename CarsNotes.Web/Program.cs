@@ -1,23 +1,17 @@
 using CarsNotes.Data;
-using CarsNotes.Services;
+using CarsNotes.Web.Services;
 using CarsNotes.Web.Areas.Identity.Data;
-//using CarsNotes.Services.Interfaces;
-//using CarsNotes.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CarsNotes.Web.Abstractions;
-using CarsNotes.Web.Services.Interfaces;
-using Microsoft.AspNetCore.Builder;
 using CarsNotes.Web.Seed;
 using CarsNotes.Web.Repositories;
-//using CarsNotes.Web.Services;
 
 namespace CarsNotes
 {
     public class Program
     {
-        //public static async void Main(string[] args)
         public static async Task Main(string[] args)
         {
 
@@ -54,9 +48,9 @@ namespace CarsNotes
 
             builder.Services.AddControllersWithViews(options =>
             {
-                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()); // CSRF attacs protection.To implement! ---------
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
-            builder.Services.AddScoped<ICarService, CarService>();
+            builder.Services.AddScoped<ICarsService, CarService>();
 
             var app = builder.Build();
 
@@ -100,49 +94,12 @@ namespace CarsNotes
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //app.MapControllerRoute(
-            //      name: "Admin",
-            //      pattern: "{area:exists}/{controller=Users}/{action=ListUsers}/{id?}");
-
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.MapRazorPages();
-            /*
-            using (var scope = app.Services.CreateScope())
-            {
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                var roles = new[] { "Admin", "Manager", "Member" };
-
-                foreach (var role in roles)
-                {
-                    if (!await roleManager.RoleExistsAsync(role))
-                        await roleManager.CreateAsync(new IdentityRole(role));
-                }
-            }
-            using (var scope = app.Services.CreateScope())
-            {
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<CarUser>>();
-
-                string email = "Ruslan11@abv.bg";
-                string password = "Ruslan11@abv.bg";
-
-                if (await userManager.FindByEmailAsync(email) == null)
-                {
-                    var user = new CarUser();
-                    user.UserName = email;
-                    user.Email = email;
-                    user.EmailConfirmed = true;
-                    user.IsDeleted = false;
-
-                    await userManager.CreateAsync(user, password);
-
-                    await userManager.AddToRoleAsync(user, "Admin");
-                }
-            }
-            */
             app.Run();
         }
     }
