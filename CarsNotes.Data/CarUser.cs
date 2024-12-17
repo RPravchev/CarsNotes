@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-//using CarsNotes.Data.Models;
 using static CarsNotes.Common.Constants.CarUserConstants;
 
 namespace CarsNotes.Web.Areas.Identity.Data

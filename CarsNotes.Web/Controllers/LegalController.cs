@@ -15,7 +15,7 @@ namespace CarsNotes.Web.Controllers
     {
         public async Task<IActionResult> Index(LegalFilterViewModel infoModel, Guid id)
         {
-            // ----------------------------------------- Type of Care Date logic --- start
+
             if (infoModel.StartDate != null)
             {
                 TempData["StartDateLegal"] = infoModel.StartDate;
@@ -50,31 +50,24 @@ namespace CarsNotes.Web.Controllers
 
             var t = infoModel.LegalTypesSelected;
 
-            // ----------------------------------------- Type of Care Date logic --- end
-
-
-
             string currentUserId = GetCurrentUserId();
 
-            var car = await repo.Cars.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(c => c.Id == id);
+            Car? car = await repo.Cars.Query()
+                .FirstOrDefaultAsync(c => c.OwnerId == currentUserId && c.Id == id);
 
             if (car == null)
             {
                 return RedirectToAction("Details", "Car");
             }
 
-            var query = repo.Legals.Query()
-                .Where(e => e.CarId == id)
-                //.Where(e => e.Date >= sDate)
-                //.Where(e => e.Date <= eDate)
-                .Where(e => e.Date >= infoModel.StartDate)
-                .Where(e => e.Date <= infoModel.EndDate)
-                .Where(e => e.IsDeleted == false)
-                .AsQueryable();
+            IQueryable<Legal> query = repo.Legals.Query()
+                .AsQueryable()
+                .Where(e => e.CarId == id
+                        && e.Date >= infoModel.StartDate
+                        && e.Date <= infoModel.EndDate
+                        && e.IsDeleted == false);
 
-            var data = await query
+            List<LegalViewModel> data = await query
                 .OrderByDescending(e => e.Date)
                 .Include(e => e.LegalType)
                 .Select(e => new LegalViewModel()
@@ -83,6 +76,8 @@ namespace CarsNotes.Web.Controllers
                     LegalType = e.LegalType.Name,
                     LegalTypeId = e.LegalTypeId,
                     Date = e.Date,
+                    ValidFrom = e.ValidFrom,
+                    ValidTo = e.ValidTo,
                     TypeDetails = e.TypeDetails,
                     Issuer = e.Issuer,
                     Insurer = e.Insurer,
@@ -103,8 +98,6 @@ namespace CarsNotes.Web.Controllers
                 .DistinctBy(g => g.Id)
                 .ToList();
 
-
-
             if (TempData.Peek("LegalTypesSelected") == null)
             {
                 infoModel.LegalTypesSelected = actualTypes.Select(g => g.Name).ToList();
@@ -112,7 +105,6 @@ namespace CarsNotes.Web.Controllers
                 data = data
                     .Where(g => infoModel.LegalTypesSelected.Contains(g.LegalType))
                     .ToList();
-
             }
             else
             {
@@ -124,7 +116,6 @@ namespace CarsNotes.Web.Controllers
                 data = data
                     .Where(g => infoModel.LegalTypesSelected.Contains(g.LegalType))
                     .ToList();
-
             }
 
             decimal totalExp = 0;
@@ -134,16 +125,12 @@ namespace CarsNotes.Web.Controllers
                 totalExp += (decimal)data[f].Price;
             }
 
-
             var model = new LegalFilterViewModel
             {
-                //StartDate = sDate,
-                //EndDate = eDate,
                 StartDate = infoModel.StartDate,
                 EndDate = infoModel.EndDate,
                 LegalInfos = (IList<LegalViewModel>)data,
                 TotalExpensesForPeriod = totalExp,
-                //LegalTypesSelected = infoModel.LegalTypesSelected,
                 LegalTypesSelected = (IList<string>)TempData.Peek("LegalTypesSelected"),
                 LegalTypeList = actualTypes
             };
@@ -151,15 +138,13 @@ namespace CarsNotes.Web.Controllers
             return View(model);
         }
 
-        // ------------------------------------------------------ Add
         [HttpGet]
         public async Task<IActionResult> Add(Guid id)
         {
             string currentUserId = GetCurrentUserId();
 
-            var car = await repo.Cars.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(g => g.Id == id);
+            Car? car = await repo.Cars.Query()
+                .FirstOrDefaultAsync(c => c.OwnerId == currentUserId && c.Id == id);
 
             if (car == null)
             {
@@ -176,13 +161,13 @@ namespace CarsNotes.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(LegalViewModel model)
         {
             string currentUserId = GetCurrentUserId();
 
-            var car = await repo.Cars.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(g => g.Id == model.Id);
+            Car? car = await repo.Cars.Query()
+                .FirstOrDefaultAsync(c => c.OwnerId == currentUserId && c.Id == model.Id);
 
             if (car == null)
             {
@@ -219,15 +204,13 @@ namespace CarsNotes.Web.Controllers
             return RedirectToAction("Index", "Legal", new { id = model.Id, startDate = TempData["StartDateLegal"], endDate = TempData["EndDateLegal"] });
         }
 
-        // ------------------------------------------------------ Edit
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
             string currentUserId = GetCurrentUserId();
 
             var legal = await repo.Legals.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(g => g.Id == id);
+                .FirstOrDefaultAsync(g => g.OwnerId == currentUserId && g.Id == id);
 
             if (legal == null)
             {
@@ -248,21 +231,19 @@ namespace CarsNotes.Web.Controllers
                 ValidFrom = legal.ValidFrom,
                 ValidTo = legal.ValidTo,
                 Price = legal.Price,
-                //OwnerId = legal.OwnerId,
                 CarId = legal.CarId
-
             };
             return View(model);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(LegalViewModel model)
         {
             string currentUserId = GetCurrentUserId();
 
-            var legal = await repo.Legals.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(g => g.Id == model.Id);
+            Legal? legal = await repo.Legals.Query()
+                .FirstOrDefaultAsync(g => g.OwnerId == currentUserId && g.Id == model.Id);
 
             if (legal == null)
             {
@@ -290,7 +271,6 @@ namespace CarsNotes.Web.Controllers
             await repo.CompleteAsync();
             return RedirectToAction("Index", "Legal", new { id = TempData.Peek("CarId"), startDate = TempData.Peek("StartDateLegal"), endDate = TempData.Peek("EndDateLegal") });
         }
-        // ---------------------------------------------------------- Delete
         public async Task<IActionResult> Delete(Guid id)
         {
             string currentUserId = GetCurrentUserId();
@@ -310,8 +290,6 @@ namespace CarsNotes.Web.Controllers
             return RedirectToAction("Index", "Legal", new { id = legal.CarId });
         }
 
-
-        // ----------------------------------------------------------
         private string GetCurrentUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);

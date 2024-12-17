@@ -1,27 +1,19 @@
 ﻿using CarsNotes.Data;
 using CarsNotes.Web.Areas.Admin.Models;
 using CarsNotes.Web.Areas.Identity.Data;
-//using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-//using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-//using CarsNotes.Data;
 
 namespace CarsNotes.Web.Areas.Admin.Controllers
-//namespace CarsNotes.Web.Areas.Admin
 {
-	//public class UsersController(UserManager<CarUser> userManager) : Controller
 	public class AdminController(UserManager<CarUser> userManager, ApplicationDbContext context) : Controller
 	{
-		//[Route("Admin/ListUsers")]
 		[HttpGet]
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> ListUsers()
         {
-            
-			//var model = await userManager.Users
 			var users = await userManager.Users
 				.ToListAsync();
 
@@ -42,9 +34,9 @@ namespace CarsNotes.Web.Areas.Admin.Controllers
 				});
             }
 
-
 			return View(model);
         }
+
         [HttpGet]
         public async Task<IActionResult> DeleteUser(string id)
         {

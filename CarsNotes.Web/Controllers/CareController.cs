@@ -67,6 +67,7 @@ namespace CarsNotes.Web.Controllers
             }
 
             IQueryable<Care> query = repo.Cares.Query()
+                .AsQueryable()
                 .Where(e => e.CarId == id
                          && e.Date >= sDate
                          && e.Date <= eDate

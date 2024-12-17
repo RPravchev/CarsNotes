@@ -46,20 +46,21 @@ namespace CarsNotes.Web.Controllers
             string currentUserId = GetCurrentUserId();
             TempData["CarId"] = id;
 
-            var car = await repo.Cars.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(c => c.Id == id);
+            Car? car = await repo.Cars.Query()
+                .FirstOrDefaultAsync(c => c.OwnerId == currentUserId && c.Id == id);
+
             if (car == null)
             {
                 return RedirectToAction("Details", "Car");
             }
 
-            var query = repo.Places.Query()
-                .Where(e => e.Date >= sDate)
-                .Where(e => e.Date <= eDate)
-                .Where(e => e.CarId == id)
-                .Where(e => e.IsDeleted == false)
-                .AsQueryable();
+            IQueryable<Place> query = repo.Places.Query()
+                .AsQueryable()
+                .Where(e => e.Date >= sDate
+                        && e.Date <= eDate
+                        && e.CarId == id
+                        && e.IsDeleted == false);
+
 
             IList<Place>? data = await query
                 .OrderByDescending(e => e.Date)
@@ -67,7 +68,7 @@ namespace CarsNotes.Web.Controllers
                 .ToListAsync();
 
 
-            var model = new PlaceInfoViewModel
+            PlaceInfoViewModel model = new PlaceInfoViewModel
             {
                 StartDate = sDate,
                 EndDate = eDate,
@@ -80,15 +81,13 @@ namespace CarsNotes.Web.Controllers
             return View(model);
         }
 
-        // ------------------------------------------------------ Add
         [HttpGet]
         public async Task<IActionResult> Add(Guid id)
         {
             string currentUserId = GetCurrentUserId();
 
-            var car = await repo.Cars.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(g => g.Id == id);
+            Car? car = await repo.Cars.Query()
+                .FirstOrDefaultAsync(c => c.OwnerId == currentUserId && c.Id == id);
 
             if (car == null)
             {
@@ -97,8 +96,6 @@ namespace CarsNotes.Web.Controllers
 
             var model = new PlaceViewModel()
             {
-                //Longitude = (decimal)23.343544,
-                //Latitude = (decimal)42.663532,
                 Date = DateTime.Now
             };
 
@@ -111,7 +108,7 @@ namespace CarsNotes.Web.Controllers
         {
             string currentUserId = GetCurrentUserId();
 
-            var car = await repo.Cars.Query()
+            Car? car = await repo.Cars.Query()
                 .Where(g => g.OwnerId == currentUserId)
                 .Select(g => new Car()
                 {
@@ -147,7 +144,6 @@ namespace CarsNotes.Web.Controllers
             return RedirectToAction("Index", "Place", new { id = model.Id, startDate = TempData.Peek("StartDatePlace"), endDate = TempData.Peek("EndDatePlace") });
         }
 
-        // ------------------------------------------------------ Edit
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -176,6 +172,7 @@ namespace CarsNotes.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(PlaceViewModel model)
         {
             string currentUserId = GetCurrentUserId();
@@ -205,7 +202,6 @@ namespace CarsNotes.Web.Controllers
             return RedirectToAction("Index", "Place", new { id = place.CarId, startDate = TempData.Peek("StartDatePlace"), endDate = TempData.Peek("EndDatePlace") });
         }
 
-        // ---------------------------------------------------------- Delete
         public async Task<IActionResult> Delete(Guid id)
         {
             string currentUserId = GetCurrentUserId();
@@ -224,8 +220,6 @@ namespace CarsNotes.Web.Controllers
             return RedirectToAction("Index", "Place", new { id = place.CarId });
         }
 
-
-        // ----------------------------------------------------------
         private string GetCurrentUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);

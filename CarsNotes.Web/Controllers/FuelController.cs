@@ -47,20 +47,21 @@ namespace CarsNotes.Web.Controllers
             string currentUserId = GetCurrentUserId();
             TempData["CarId"] = id;
 
-            var car = await repo.Cars.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(c => c.Id == id);
+            Car? car = await repo.Cars.Query()
+                .FirstOrDefaultAsync(c => c.OwnerId == currentUserId && c.Id == id);
+
             if (car == null)
             {
                 return RedirectToAction("Details", "Car");
             }
 
-            var query = repo.Fuels.Query()
-                .Where(e => e.Date >= sDate)
-                .Where(e => e.Date <= eDate)
-                .Where(e => e.CarId == id)
-                .Where(e => e.IsDeleted == false)
-                .AsQueryable();
+            IQueryable<Fuel> query = repo.Fuels.Query()
+                .AsQueryable()
+                .Where(e => e.Date >= sDate
+                         && e.Date <= eDate
+                         && e.CarId == id
+                         && !e.IsDeleted);
+
 
             IList<Fuel>? data = await query
                 .OrderByDescending(e => e.Date)
@@ -110,16 +111,13 @@ namespace CarsNotes.Web.Controllers
                 fuelConsumptionAvarage = (fuelConsumption / distance * 100).ToString("0.0");
             }
 
-            // --- Pagination start
+            // --- Pagination
             int pageSize = 10;
             int totalPages = data.Count();
 
             var dataRows = data
-                .Skip((page - 1) * pageSize) // Skip items for previous pages
-                .Take(pageSize);              // Take only items for the current page
-            // --- Pagination end
-
-
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize);              
 
             var model = new FuelInfoViewModel
             {
@@ -144,15 +142,14 @@ namespace CarsNotes.Web.Controllers
 
             return View(model);
         }
-        // ------------------------------------------------------ Add
+
         [HttpGet]
         public async Task<IActionResult> Add(Guid id)
         {
             string currentUserId = GetCurrentUserId();
 
-            var car = await repo.Cars.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(g => g.Id == id);
+            Car? car = await repo.Cars.Query()
+                .FirstOrDefaultAsync(c => c.OwnerId == currentUserId && c.Id == id);
 
             if (car == null)
             {
@@ -173,9 +170,8 @@ namespace CarsNotes.Web.Controllers
         {
             string currentUserId = GetCurrentUserId();
 
-            var car = await repo.Cars.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(g => g.Id == model.Id);
+            Car? car = await repo.Cars.Query()
+                .FirstOrDefaultAsync(c => c.OwnerId == currentUserId && c.Id == model.Id);
 
             if (car == null)
             {
@@ -189,7 +185,6 @@ namespace CarsNotes.Web.Controllers
 
             Fuel fuel = new Fuel()
             {
-                //Id = model.Id,
                 Date = model.Date,
                 GasStation = model.GasStation,
                 City = model.City,
@@ -198,10 +193,8 @@ namespace CarsNotes.Web.Controllers
                 PricePerLiter = model.PricePerLiter,
                 PriceTotalFuel = model.PriceTotalFuel,
                 KilometrageActual = model.KilometrageActual,
-                //ExpencesTotalFuel = model.ExpencesTotalFuel,
                 CreatedOn = DateTime.Now,
                 OwnerId = currentUserId,
-                //CarId = (Guid)TempData["CarId"]
                 CarId = model.Id,
                 Description = model.Description,
                 FullTank = model.FullTank
@@ -212,22 +205,20 @@ namespace CarsNotes.Web.Controllers
         }
 
 
-        // ------------------------------------------------------ Edit
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
             string currentUserId = GetCurrentUserId();
 
-            var fuel = await repo.Fuels.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(g => g.Id == id);
+            Fuel? fuel = await repo.Fuels.Query()
+                .FirstOrDefaultAsync(f => f.OwnerId == currentUserId && f.Id == id);
 
             if (fuel == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            var model = new FuelViewModel()
+            FuelViewModel? model = new FuelViewModel()
             {
                 Id = fuel.Id,
                 Date = fuel.Date,
@@ -247,6 +238,7 @@ namespace CarsNotes.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(FuelViewModel model)
         {
             string currentUserId = GetCurrentUserId();
@@ -273,7 +265,6 @@ namespace CarsNotes.Web.Controllers
             fuel.PricePerLiter = model.PricePerLiter;
             fuel.PriceTotalFuel = model.PriceTotalFuel;
             fuel.KilometrageActual = model.KilometrageActual;
-            //fuel.ExpencesTotalFuel = model.ExpencesTotalFuel;
             fuel.Description = model.Description;
             fuel.FullTank = model.FullTank;
 
@@ -281,14 +272,12 @@ namespace CarsNotes.Web.Controllers
             return RedirectToAction("Index", "Fuel", new { id = fuel.CarId, startDate = TempData["StartDate"], endDate = TempData["EndDate"] });
         }
 
-        // ---------------------------------------------------------- Delete
         public async Task<IActionResult> Delete(Guid id)
         {
             string currentUserId = GetCurrentUserId();
 
-            var fuel = await repo.Fuels.Query()
-                .Where(g => g.OwnerId == currentUserId)
-                .FirstOrDefaultAsync(g => g.Id == id);
+            Fuel? fuel = await repo.Fuels.Query()
+                .FirstOrDefaultAsync(f => f.OwnerId == currentUserId && f.Id == id);
 
             if (fuel == null)
             {
@@ -301,7 +290,6 @@ namespace CarsNotes.Web.Controllers
             return RedirectToAction("Index", "Fuel", new { id = fuel.CarId });
         }
 
-        // ----------------------------------------------------------
         private string GetCurrentUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);

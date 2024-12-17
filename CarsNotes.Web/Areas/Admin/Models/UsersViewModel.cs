@@ -1,6 +1,4 @@
-﻿//using CarsNotes.Web.Areas.Identity.Data;
-using CarsNotes.Data;
-
+﻿
 namespace CarsNotes.Web.Areas.Admin.Models
 {
 	public class UsersViewModel
