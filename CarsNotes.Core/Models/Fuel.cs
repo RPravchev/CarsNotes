@@ -1,10 +1,11 @@
-﻿using CarsNotes.Web.Areas.Identity.Data;
+﻿//using CarsNotes.Web.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static CarsNotes.Common.Constants.FuelConstants;
 
-namespace CarsNotes.Data.Models
+//namespace CarsNotes.Data.Models
+namespace CarsNotes.Core.Models
 {
     public class Fuel
     {
@@ -50,12 +51,12 @@ namespace CarsNotes.Data.Models
         public string? Description { get; set; }
 
         //public decimal ExpencesTotalFuel { get; set; }
-
+        
         [Required]
         public string OwnerId { get; set; } = null!;
         [ForeignKey(nameof(OwnerId))]
         public CarUser Owner { get; set; } = null!;
-
+        
         [Required]
         public Guid CarId { get; set; }
         [ForeignKey(nameof(CarId))]

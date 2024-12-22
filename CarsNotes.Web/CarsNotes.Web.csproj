@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="jQuery" Version="3.6.0" />
     <PackageReference Include="jQuery.UI.Combined" Version="1.14.1" />
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
@@ -28,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CarsNotes.Common\CarsNotes.Common.csproj" />
     <ProjectReference Include="..\CarsNotes.Data\CarsNotes.Data.csproj" />
+    <ProjectReference Include="..\CarsNotes.Services\CarsNotes.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,5 @@
-﻿using CarsNotes.Data.Models;
+﻿//using CarsNotes.Data.Models;
+using CarsNotes.Core.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace CarsNotes.Web.Models

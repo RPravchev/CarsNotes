@@ -1,8 +1,10 @@
-﻿using CarsNotes.Web.Models;
+﻿using CarsNotes.Core.Abstractions;
+using CarsNotes.Core.DTOs;
+using CarsNotes.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using CarsNotes.Web.Abstractions;
+using AutoMapper;
 
 namespace CarsNotes.Web.Controllers
 {
@@ -10,16 +12,19 @@ namespace CarsNotes.Web.Controllers
     public class CarController : Controller
     {
         private readonly ICarsService _carService;
+        private readonly IMapper _mapper;
 
-        public CarController(ICarsService carService)
+        public CarController(ICarsService carService, IMapper mapper)
         {
             _carService = carService;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
         {
             string currentUserId = GetCurrentUserId();
-            var model = await _carService.GetCarShortInfosAsync(currentUserId);
+            var modelDto = await _carService.GetCarShortInfosAsync(currentUserId);
+            var model = _mapper.Map<List<CarInfoViewModel>>(modelDto);
             return View(model);
         }
 
@@ -40,7 +45,8 @@ namespace CarsNotes.Web.Controllers
                 return View(model);
             }
 
-            await _carService.AddCarAsync(model, model.OwnerId);
+            var modelDto = _mapper.Map<CarDto>(model);
+            await _carService.AddCarAsync(modelDto, model.OwnerId);
             return RedirectToAction(nameof(Index));
         }
 
@@ -48,17 +54,18 @@ namespace CarsNotes.Web.Controllers
         public async Task<IActionResult> Details(Guid id)
         {
             string currentUserId = GetCurrentUserId();
-            var model = await _carService.GetCarDetailsAsync(id, currentUserId);
+            var modelDto = await _carService.GetCarDetailsAsync(id, currentUserId);
 
-            if (model == null)
+            if (modelDto == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
             RemoveTempData();
             TempData["CarId"] = id;
-            TempData["OwnerId"] = model.OwnerId;
+            TempData["OwnerId"] = modelDto.OwnerId;
 
+            var model = _mapper.Map<CarViewModel>(modelDto);
             return View(model);
         }
 
@@ -66,14 +73,15 @@ namespace CarsNotes.Web.Controllers
         public async Task<IActionResult> Edit(Guid id)
         {
             string currentUserId = GetCurrentUserId();
-            var viewModel = await _carService.GetCarForEditAsync(id, currentUserId);
+            var viewModelDto = await _carService.GetCarForEditAsync(id, currentUserId);
 
-            if (viewModel == null)
+            if (viewModelDto == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(viewModel);
+            var model = _mapper.Map<CarViewModel>(viewModelDto);
+            return View(model);
         }
 
         [HttpPost]
@@ -86,7 +94,8 @@ namespace CarsNotes.Web.Controllers
                 return View(vModel);
             }
 
-            await _carService.EditCarAsync(vModel, currentUserId);
+            var modelDto = _mapper.Map<CarDto>(vModel);
+            await _carService.EditCarAsync(modelDto, currentUserId);
             return RedirectToAction("Details", "Car", new { id = vModel.Id });
         }
 

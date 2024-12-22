@@ -1,8 +1,7 @@
-﻿using CarsNotes.Data;
-using CarsNotes.Data.Models;
-using CarsNotes.Web.Abstractions;
+﻿using CarsNotes.Core.Abstractions;
+using CarsNotes.Core.Models;
 
-namespace CarsNotes.Web.Repositories
+namespace CarsNotes.Data.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {

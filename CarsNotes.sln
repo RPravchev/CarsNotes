@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarsNotes.Common", "CarsNot
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarsNotes.Data", "CarsNotes.Data\CarsNotes.Data.csproj", "{5BFB2A5D-4F8A-4CA3-93D7-B68B51E5D0C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarsNotes.Tests", "CarsNotes.Tests\CarsNotes.Tests.csproj", "{FBE0BCC0-A352-4BF2-9C5B-C5C2D6AF9E6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CarsNotes.Tests", "CarsNotes.Tests\CarsNotes.Tests.csproj", "{FBE0BCC0-A352-4BF2-9C5B-C5C2D6AF9E6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarsNotes.Services", "CarsNotes.Services\CarsNotes.Services.csproj", "{273C4D25-F804-4181-A4C2-B3680CBFB3D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarsNotes.Core", "CarsNotes.Core\CarsNotes.Core.csproj", "{97E77712-6A3A-4347-9274-A5A25A14A8AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{FBE0BCC0-A352-4BF2-9C5B-C5C2D6AF9E6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBE0BCC0-A352-4BF2-9C5B-C5C2D6AF9E6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBE0BCC0-A352-4BF2-9C5B-C5C2D6AF9E6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{273C4D25-F804-4181-A4C2-B3680CBFB3D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{273C4D25-F804-4181-A4C2-B3680CBFB3D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{273C4D25-F804-4181-A4C2-B3680CBFB3D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{273C4D25-F804-4181-A4C2-B3680CBFB3D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97E77712-6A3A-4347-9274-A5A25A14A8AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97E77712-6A3A-4347-9274-A5A25A14A8AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97E77712-6A3A-4347-9274-A5A25A14A8AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97E77712-6A3A-4347-9274-A5A25A14A8AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

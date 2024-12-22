@@ -1,12 +1,12 @@
 using CarsNotes.Data;
-using CarsNotes.Web.Services;
-using CarsNotes.Web.Areas.Identity.Data;
+using CarsNotes.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CarsNotes.Web.Abstractions;
 using CarsNotes.Web.Seed;
-using CarsNotes.Web.Repositories;
+using CarsNotes.Core.Abstractions;
+using CarsNotes.Data.Repositories;
+using CarsNotes.Core;
 
 namespace CarsNotes
 {
@@ -26,6 +26,7 @@ namespace CarsNotes
 			});
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -51,6 +52,7 @@ namespace CarsNotes
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             });
             builder.Services.AddScoped<ICarsService, CarService>();
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             var app = builder.Build();
 

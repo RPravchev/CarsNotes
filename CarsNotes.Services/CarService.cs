@@ -1,21 +1,21 @@
-﻿using CarsNotes.Data.Models;
-using CarsNotes.Web.Models;
-using Microsoft.EntityFrameworkCore;
-using CarsNotes.Web.Abstractions;
+﻿using Microsoft.EntityFrameworkCore;
+using CarsNotes.Core.Abstractions;
+using CarsNotes.Core.DTOs;
+using CarsNotes.Core.Models;
 
 
-namespace CarsNotes.Web.Services
+namespace CarsNotes.Services
 {
     public class CarService(IUnitOfWork repo) : ICarsService
     {
 
-        public async Task<List<CarInfoViewModel>> GetCarShortInfosAsync(string userId)
+        public async Task<List<CarInfoDto>> GetCarShortInfosAsync(string userId)
         {
             return await repo.Cars.Query()
                 .AsNoTracking()
                 .Where(g => !g.IsDeleted && g.OwnerId == userId)
-                .Select(g => new CarInfoViewModel
-                {
+                .Select(g => new CarInfoDto
+                { 
                     Id = g.Id,
                     MainImageUrl = g.MainImageUrl,
                     ShortName = g.ShortName,
@@ -26,14 +26,14 @@ namespace CarsNotes.Web.Services
                 .ToListAsync();
         }
 
-        public async Task<CarViewModel> GetCarDetailsAsync(Guid id, string userId)
+        public async Task<CarDto> GetCarDetailsAsync(Guid id, string userId)
         {
             var car = await repo.Cars.Query()
                 .FirstOrDefaultAsync(c => c.OwnerId == userId && c.Id == id);
 
             if (car == null) return null;
 
-            return new CarViewModel
+            return new CarDto
             {
                 Id = id,
                 ShortName = car.ShortName,
@@ -64,12 +64,12 @@ namespace CarsNotes.Web.Services
             };
         }
 
-        public async Task<CarViewModel> GetCarForEditAsync(Guid id, string userId)
+        public async Task<CarDto> GetCarForEditAsync(Guid id, string userId)
         {
             var model = await repo.Cars.Query()
                 .AsNoTracking()
-                .Where(c => c.Id == id && c.OwnerId == userId && !c.IsDeleted)                
-                .Select(c => new CarViewModel
+                .Where(c => c.Id == id && c.OwnerId == userId && !c.IsDeleted)
+                .Select(c => new CarDto
                 {
                     Id = id,
                     ShortName = c.ShortName,
@@ -101,7 +101,7 @@ namespace CarsNotes.Web.Services
             return model;
         }
 
-        public async Task AddCarAsync(CarViewModel model, string userId)
+        public async Task AddCarAsync(CarDto model, string userId)
         {
             Car car = new Car
             {
@@ -137,7 +137,7 @@ namespace CarsNotes.Web.Services
             await repo.CompleteAsync();
         }
 
-        public async Task EditCarAsync(CarViewModel model, string userId)
+        public async Task EditCarAsync(CarDto model, string userId)
         {
             var car = await repo.Cars.Query()
                 .FirstOrDefaultAsync(c => c.OwnerId == userId && c.Id == model.Id);

@@ -1,7 +1,6 @@
-﻿using CarsNotes.Web.Models;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
-namespace CarsNotes.Web.Abstractions
+namespace CarsNotes.Core.Abstractions
 {
     public interface IRepository<T> where T : class
     {

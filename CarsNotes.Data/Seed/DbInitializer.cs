@@ -1,6 +1,6 @@
-﻿using CarsNotes.Data.Models;
+﻿using CarsNotes.Core;
+using CarsNotes.Core.Models;
 using CarsNotes.Data;
-using CarsNotes.Web.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

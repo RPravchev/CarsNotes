@@ -1,7 +1,6 @@
-﻿using CarsNotes.Data.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using CarsNotes.Core.Models;
 
-namespace CarsNotes.Web.Abstractions
+namespace CarsNotes.Core.Abstractions
 {
     public interface IUnitOfWork : IDisposable
     {

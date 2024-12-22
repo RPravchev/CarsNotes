@@ -3,7 +3,10 @@
 #nullable disable
 
 using CarsNotes;
-using CarsNotes.Web.Areas.Identity.Data;
+using CarsNotes.Core;
+
+//using CarsNotes.Web.Areas.Identity.Data;
+using CarsNotes.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

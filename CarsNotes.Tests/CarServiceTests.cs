@@ -1,9 +1,13 @@
 ﻿using NUnit.Framework;
 using Moq;
-using CarsNotes.Web.Abstractions;
-using CarsNotes.Web.Services;
-using CarsNotes.Data.Models;
+//using CarsNotes.Web.Abstractions;
+//using CarsNotes.Web.Services;
+//using CarsNotes.Data.Models;
 using CarsNotes.Web.Models;
+using CarsNotes.Core.Abstractions;
+using CarsNotes.Core.Models;
+using CarsNotes.Services;
+using CarsNotes.Core.DTOs;
 
 namespace CarsNotes.Tests
 {
@@ -29,7 +33,7 @@ namespace CarsNotes.Tests
         public async Task AddCarAsync_ShouldAddNewCar()
         {
             // Arrange
-            var model = new CarViewModel
+            var model = new CarDto
             {
                 ShortName = "NewCar",
                 MainImageUrl = "url.com",

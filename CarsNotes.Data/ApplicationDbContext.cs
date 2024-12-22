@@ -1,7 +1,7 @@
-﻿using CarsNotes.Data.Models;
+﻿using CarsNotes.Core;
+using CarsNotes.Core.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using CarsNotes.Web.Areas.Identity.Data;
 
 namespace CarsNotes.Data
 {

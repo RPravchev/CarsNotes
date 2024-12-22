@@ -1,6 +1,6 @@
-﻿using CarsNotes.Data;
+﻿using CarsNotes.Core;
+using CarsNotes.Data;
 using CarsNotes.Web.Areas.Admin.Models;
-using CarsNotes.Web.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

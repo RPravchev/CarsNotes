@@ -1,9 +1,8 @@
-﻿using CarsNotes.Data;
-using CarsNotes.Web.Abstractions;
+﻿using CarsNotes.Core.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace CarsNotes.Web.Repositories
+namespace CarsNotes.Data.Repositories
 {
     public class Repository<T> : IRepository<T> where T : class
     {

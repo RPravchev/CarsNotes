@@ -1,6 +1,5 @@
-﻿using CarsNotes.Data;
-using CarsNotes.Data.Models;
-using CarsNotes.Web.Abstractions;
+﻿using CarsNotes.Core.Abstractions;
+using CarsNotes.Core.Models;
 using CarsNotes.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

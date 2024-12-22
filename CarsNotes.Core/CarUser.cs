@@ -2,7 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using static CarsNotes.Common.Constants.CarUserConstants;
 
-namespace CarsNotes.Web.Areas.Identity.Data
+//namespace CarsNotes.Web.Areas.Identity.Data
+//namespace CarsNotes.Data
+namespace CarsNotes.Core
 {
     public class CarUser : IdentityUser
     {

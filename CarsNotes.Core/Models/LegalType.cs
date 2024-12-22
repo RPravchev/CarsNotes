@@ -3,7 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static CarsNotes.Common.Constants.LegalConstants;
 
-namespace CarsNotes.Data.Models
+//namespace CarsNotes.Data.Models
+namespace CarsNotes.Core.Models
 {
     public class LegalType
     {
