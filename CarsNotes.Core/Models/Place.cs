@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
 using static CarsNotes.Common.Constants.PlaceConstants;
 
-//namespace CarsNotes.Data.Models
 namespace CarsNotes.Core.Models
 {
     public class Place

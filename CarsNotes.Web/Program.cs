@@ -3,7 +3,7 @@ using CarsNotes.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CarsNotes.Web.Seed;
+using CarsNotes.Data.Seed;
 using CarsNotes.Core.Abstractions;
 using CarsNotes.Data.Repositories;
 using CarsNotes.Core;
@@ -23,10 +23,10 @@ namespace CarsNotes
                 options.UseSqlServer(connectionString,
                     b => b.MigrationsAssembly("CarsNotes.Web"));
 
-			});
+            });
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            
+
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -84,8 +84,8 @@ namespace CarsNotes
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-				app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
-				app.UseHsts();
+                app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
+                app.UseHsts();
             }
 
             app.UseHttpsRedirection();

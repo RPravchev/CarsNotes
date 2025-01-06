@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using static CarsNotes.Common.Constants.CareConstants;
 
-//namespace CarsNotes.Data.Models
 namespace CarsNotes.Core.Models
 {
     public class CareType

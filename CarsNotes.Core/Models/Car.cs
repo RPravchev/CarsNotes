@@ -1,10 +1,8 @@
-﻿//using CarsNotes.Web.Areas.Identity.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using static CarsNotes.Common.Constants.CarConstants;
 
-//namespace CarsNotes.Data.Models
 namespace CarsNotes.Core.Models
 {
     public class Car
@@ -29,7 +27,7 @@ namespace CarsNotes.Core.Models
         [Required]
         [MaxLength(CarModelMax)]
         [Comment("The model of the car")]
-        public string CarModel { get; set; }= null!;
+        public string CarModel { get; set; } = null!;
 
         [MaxLength(CarRegistrationNumberMax)]
         [Comment("The plate of the car")]
@@ -47,13 +45,13 @@ namespace CarsNotes.Core.Models
         [Comment("The type of the gear of the car")]
         public string? TransmissionType { get; set; }
 
-        [Range(CarDoorsNumberMin,CarDoorsNumberMax)]
+        [Range(CarDoorsNumberMin, CarDoorsNumberMax)]
         [Comment("The number of doors of the car")]
         public int DoorsNumber { get; set; }
 
         [MaxLength(CarColorMax)]
         [Comment("The color of the car")]
-        public string? Color {  get; set; }
+        public string? Color { get; set; }
 
         [Range(CarHorsePowerMin, CarHorsePowerMax)]
         [Comment("The value of the horse power of the car")]
@@ -73,7 +71,7 @@ namespace CarsNotes.Core.Models
 
         [MaxLength(CarTransmissionNumberMax)]
         [Comment("The Gear Number of the car")]
-        public string? TransmissionNumber {  get; set; }
+        public string? TransmissionNumber { get; set; }
 
         [Comment("When the car is produced")]
         public int YearProduction { get; set; }
@@ -87,7 +85,7 @@ namespace CarsNotes.Core.Models
 
         [MaxLength(CarVINCodeMax)]
         [Comment("The Vehicle Identification Number")]
-        public string? VINCode { get; set;}
+        public string? VINCode { get; set; }
 
         [MaxLength(CarCountryProductionMax)]
         [Comment("Where the car is produced")]

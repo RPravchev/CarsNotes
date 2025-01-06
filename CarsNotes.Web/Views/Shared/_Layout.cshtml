@@ -1,6 +1,4 @@
-﻿@using static CarsNotes.Common.Constants.ApplicationConstants
-@*@using CarsNotes.Data.Models*@
-@using CarsNotes.Web.Controllers
+﻿@using CarsNotes.Web.Controllers
 @using CarsNotes.Web.Models
 @{
     int currentYear = DateTime.UtcNow.Year;
@@ -29,10 +27,10 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">    
+                    <ul class="navbar-nav flex-grow-1">
                         @*
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         *@
                         @if (User?.Identity?.IsAuthenticated ?? false)
@@ -40,10 +38,10 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Car" asp-action="Index">Home</a>
                             </li>
-                            
+
                             @if (User.IsInRole("Admin"))
                             {
-                                <li  classs = "nav-item dropdown">
+                                <li classs="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         Admin
                                     </a>
@@ -52,7 +50,7 @@
                                     </ul>
                                 </li>
                             }
-                            
+
                         }
                         else
                         {

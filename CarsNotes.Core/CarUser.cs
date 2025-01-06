@@ -2,8 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using static CarsNotes.Common.Constants.CarUserConstants;
 
-//namespace CarsNotes.Web.Areas.Identity.Data
-//namespace CarsNotes.Data
 namespace CarsNotes.Core
 {
     public class CarUser : IdentityUser
@@ -13,8 +11,8 @@ namespace CarsNotes.Core
         public string? FirstName { get; set; }
         [PersonalData]
         [MaxLength(CarUserLastNameMaxLength)]
-        public string? LastName { get; set; } 
-        
+        public string? LastName { get; set; }
+
         public bool IsDeleted { get; set; }
     }
 }

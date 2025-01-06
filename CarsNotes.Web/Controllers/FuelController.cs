@@ -116,7 +116,7 @@ namespace CarsNotes.Web.Controllers
 
             var dataRows = data
                 .Skip((page - 1) * pageSize)
-                .Take(pageSize);              
+                .Take(pageSize);
 
             var model = new FuelInfoViewModel
             {
