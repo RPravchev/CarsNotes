@@ -2,7 +2,7 @@
 ## My implementation of a Domain Driven Design architecture, following the SOLID principles:
 
 Core/\
-│── Abstractions/ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (all custom interfacess should be here)\
+│── Abstractions/ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (all custom interfaces should be here)\
 │   ├── ICarsService.cs\
 │   ├── IRepository.cs\
 │   ├── IUnitOfWork.cs\
