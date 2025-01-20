@@ -1,12 +1,12 @@
 # ASP.NET Core 8.0 MVC - Car's Notes
 ## The base of my vision for a Domain Driven Design architecture, following the SOLID principles:
 
-Core/
-├── Abstractions/		            (all custom interfacess should be here)
-│   ├── ICarsService.cs
-│   ├── IRepository.cs
-│   ├── IUnitOfWork.cs
-├── DTOs/                       (all DTOs should be here)
+### Core/
+### ├── Abstractions/		            (all custom interfacess should be here)
+### │   ├── ICarsService.cs
+### │   ├── IRepository.cs
+### │   ├── IUnitOfWork.cs
+### ├── DTOs/                       (all DTOs should be here)
 │   ├── CarDto.cs
 │   ├── CarInfoDto.cs
 ├── Models/                     (all Entities should be here)
