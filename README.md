@@ -2,31 +2,31 @@
 ## My implementation of a Domain Driven Design architecture, following the SOLID principles:
 
 Core/\
-│── Abstractions/ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (all custom interfaces should be here)\
+│── Abstractions/ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (all custom interfaces)\
 │   ├── ICarsService.cs\
 │   ├── IRepository.cs\
 │   ├── IUnitOfWork.cs\
-│── DTOs/ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (all DTOs should be here)\
+│── DTOs/ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (all DTOs)\
 │   ├── CarDto.cs\
 │   ├── CarInfoDto.cs\
-│── Models/ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (all Entities should be here)\
+│── Models/ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (all Entities)\
 │   ├── Car.cs\
 │   ├── Care.cs\
 │   ├── Fuel.cs\
 │── CarUser.cs $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (the custom identity user)\
 \
 Data/\
-│── Migrations/ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (all migrations should be here)\
-│── Repositories/ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (all Repositories should be here)\
+│── Migrations/ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (all migrations)\
+│── Repositories/ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (all Repositories)\
 │   ├── Repository.cs\
 │   ├── UnitOfWork.cs\
 │── Seed/ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (seeding the database)\
 │── ApplicationDbContext.cs $~~~~~~~~~~~$ (the db context)\
 \
-Services/ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (all Services should be here)\
+Services/ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (all Services)\
 │── CarService.cs/\
 \
-Tests/ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (all Tests should be here)\
+Tests/ $~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~$ (all Tests)\
 │── CarServiceTests.cs/	\
 \
 Web/\
