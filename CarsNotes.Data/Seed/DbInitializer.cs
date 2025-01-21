@@ -25,15 +25,15 @@ namespace CarsNotes.Data.Seed
 			{
 				var adminUser = new CarUser
 				{
-					UserName = "Ruslan22@abv.bg",
-					Email = "Ruslan22@abv.bg",
+					UserName = "admin@carsnotes.com",
+					Email = "admin@carsnotes.com",
 					FirstName = "Admin",
 					LastName = "User",
 					EmailConfirmed = true,
 					IsDeleted = false
 				};
 
-				var result = await userManager.CreateAsync(adminUser, "Ruslan22@abv.bg");
+				var result = await userManager.CreateAsync(adminUser, "admin@carsnotes.com");
 				if (result.Succeeded)
 				{
 					await userManager.AddToRoleAsync(adminUser, "Admin");
