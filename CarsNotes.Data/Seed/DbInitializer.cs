@@ -21,7 +21,7 @@ namespace CarsNotes.Data.Seed
 				await roleManager.CreateAsync(new IdentityRole("CarOwner"));
 			}
 
-			if (await userManager.FindByEmailAsync("Ruslan22@abv.bg") == null)
+			if (await userManager.FindByEmailAsync("admin@carsnotes.com") == null)
 			{
 				var adminUser = new CarUser
 				{
