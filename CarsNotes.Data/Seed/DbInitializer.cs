@@ -105,10 +105,10 @@ namespace CarsNotes.Data.Seed
 					new CarUser
 					{
 						Id = "a78c56b5-1a43-4ee3-9b8b-deae30ab013a",
-						UserName = "Ruslan11@abv.bg",
-						NormalizedUserName = "RUSLAN11@ABV.BG",
-						Email = "Ruslan11@abv.bg",
-						NormalizedEmail = "RUSLAN11@ABV.BG",
+						UserName = "test11@abv.bg",
+						NormalizedUserName = "TEST11@ABV.BG",
+						Email = "Test11@abv.bg",
+						NormalizedEmail = "TEST11@ABV.BG",
 						EmailConfirmed = true,
 						PasswordHash = "AQAAAAIAAYagAAAAENBK29oDnEyRvZ4ZqQvqz4nKhd+wxHgg7EkDb+oeOnU9DR/k3rdeemZBgRMJD66vHQ==",
 						SecurityStamp = "DU3QDKAYQM2ZPSFD7DQHIJAMHFVRSRSH",
@@ -123,10 +123,10 @@ namespace CarsNotes.Data.Seed
 					new CarUser
 					{
 						Id = "0b98896d-d89e-4c28-89eb-e7652035b5d7",
-						UserName = "Ruslan1@abv.bg",
-						NormalizedUserName = "RUSLAN1@ABV.BG",
-						Email = "Ruslan1@abv.bg",
-						NormalizedEmail = "RUSLAN1@ABV.BG",
+						UserName = "Test1@abv.bg",
+						NormalizedUserName = "TEST1@ABV.BG",
+						Email = "Test1@abv.bg",
+						NormalizedEmail = "TEST1@ABV.BG",
 						EmailConfirmed = true,
 						PasswordHash = "AQAAAAIAAYagAAAAEFdzvn34+oYbtz3WtNyDuH63yIlKLgM3gIriN/68ZuNs5yQuRvMdRVN551v+DQS/Pw==",
 						SecurityStamp = "RNAY4OEAPVZZC52AWZZU3MMHFZXL62IF",
